@@ -1,0 +1,19 @@
+{
+  "name": "typescript-electron-app",
+  "version": "1.0.0",
+  "description": "A basic Electron app using TypeScript, HTML, and CSS",
+  "main": "dist/main.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run build && electron .", 
+    "build": "tsc",                        
+    "clean": "rm -rf dist"                 
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.12",
+    "@types/node": "^22.9.0",
+    "electron": "^33.2.0",
+    "typescript": "^5.6.3"
+  }
+}

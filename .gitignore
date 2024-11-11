@@ -1,6 +1,7 @@
 # Exception for Eigen/Core directory
 !vendor/include/eigen/Eigen/**
 !Core
+!node_modules/**
 # Prerequisites
 *.d
 

@@ -6,9 +6,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "npm run build && electron .", 
-    "build": "tsc",                        
-    "clean": "rm -rf dist"                 
+    "start": "npm run build && electron .",
+    "build": "tsc",
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@types/electron": "^1.6.12",

@@ -1,5 +1,5 @@
 import subprocess
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import pyodbc
 import logging
@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 server = 'noit-10b.database.windows.net'
 database = 'noit-10b'
-username = ''
-password = ''
+username = 'Kaloyan'
+password = 'Sor59526'
 driver = '{ODBC Driver 17 for SQL Server}'
 
 def get_db_connection():
@@ -24,33 +24,39 @@ def get_db_connection():
     print("Database connection established.")
     return conn
 
-
 @app.route('/register', methods=['POST'])
 def register():
     print("Register endpoint called.")
     data = request.get_json()
-    print(f"Received data: {data}")
     username = data.get("username")
     password = data.get("password")
     email = data.get("email")
-
-    print(f"Received registration data: username={username}, email={email}")
-
+    
     if not username or not password or not email:
         print("Missing username, password, or email.")
         return jsonify({"error": "Missing username, password, or email"}), 400
-
-    password_hash = generate_password_hash(password)
-    print(f"Generated password hash for {username}.")
-
+    
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+        
+        cursor.execute("SELECT 1 FROM Accounts WHERE Username = ? OR Email = ?", (username, email))
+        if cursor.fetchone():
+            print(f"Username {username} or email {email} already exists.")
+            return jsonify({"error": "Username or email already exists"}), 409
+        
+        password_hash = generate_password_hash(password)
         cursor.execute("""
             INSERT INTO Accounts (Username, PasswordHash, Email) VALUES (?, ?, ?)
         """, (username, password_hash, email))
         conn.commit()
+        
+        response = make_response(jsonify({"message": "User registered successfully"}), 201)
+        response.set_cookie("username", username)
+        response.set_cookie("email", email)
+        
         print(f"User {username} registered successfully.")
+        return response
     except Exception as e:
         logging.error(f"Error during registration: {e}")
         return jsonify({"error": str(e)}), 500
@@ -58,16 +64,12 @@ def register():
         cursor.close()
         conn.close()
 
-    return jsonify({"message": "User registered successfully"}), 201
-
 @app.route('/login', methods=['POST'])
 def login():
     print("Login endpoint called.")
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
-
-    print(f"Received login data: username={username}")
 
     if not username or not password:
         print("Missing username or password.")
@@ -80,8 +82,10 @@ def login():
         row = cursor.fetchone()
 
         if row and check_password_hash(row[0], password):
+            response = make_response(jsonify({"message": "Login successful"}), 200)
+            response.set_cookie("username", username)
             print(f"User {username} logged in successfully.")
-            return jsonify({"message": "Login successful"}), 200
+            return response
         else:
             print(f"Invalid username or password for user {username}.")
             return jsonify({"error": "Invalid username or password"}), 401

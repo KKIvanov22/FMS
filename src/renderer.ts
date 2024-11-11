@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         if (response.ok) {
           alert('Login successful');
+          window.location.href = './html/main.html';
         } else {
           console.error(`Login failed: ${result.error}`);
           alert(`Login failed: ${result.error}`);
@@ -60,9 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         if (response.ok) {
           alert('Registration successful');
+          window.location.href = './html/main.html';
         } else {
-          console.error(`Registration failed: ${result.error}`);
-          alert(`Registration failed: ${result.error}`);
+          if (result.error === "Username or email already exists") {
+            alert('Username or email already exists');
+          } else {
+            console.error(`Registration failed: ${result.error}`);
+            alert(`Registration failed: ${result.error}`);
+          }
         }
       } catch (error) {
         console.error('Error during registration:', error);

@@ -10,7 +10,10 @@ CREATE TABLE IF NOT EXISTS Accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Username TEXT NOT NULL UNIQUE,
     Password TEXT NOT NULL,
-    Email TEXT NOT NULL UNIQUE
+    Email TEXT NOT NULL UNIQUE,
+    Company TEXT,
+    Role TEXT,
+    RoleInCompany TEXT
 )
 ''')
 

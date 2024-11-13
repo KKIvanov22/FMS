@@ -1,7 +1,7 @@
+import sqlite3
 import subprocess
 from flask import Flask, jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
-import pyodbc
 import logging
 from flask_cors import CORS
 
@@ -10,17 +10,11 @@ CORS(app)
 
 logging.basicConfig(level=logging.DEBUG)
 
-server = 'noit-10b.database.windows.net'
-database = 'noit-10b'
-username = 'Kaloyan'
-password = 'Sor59526'
-driver = '{ODBC Driver 17 for SQL Server}'
+DATABASE = 'data/accounts.db'
 
 def get_db_connection():
     print("Establishing database connection...")
-    conn = pyodbc.connect(
-        f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}'
-    )
+    conn = sqlite3.connect(DATABASE)
     print("Database connection established.")
     return conn
 
@@ -46,22 +40,14 @@ def register():
             return jsonify({"error": "Username or email already exists"}), 409
         
         password_hash = generate_password_hash(password)
-        cursor.execute("""
-            INSERT INTO Accounts (Username, PasswordHash, Email) VALUES (?, ?, ?)
-        """, (username, password_hash, email))
+        cursor.execute("INSERT INTO Accounts (Username, Password, Email) VALUES (?, ?, ?)", (username, password_hash, email))
         conn.commit()
-        
-        response = make_response(jsonify({"message": "User registered successfully"}), 201)
-        response.set_cookie("username", username)
-        response.set_cookie("email", email)
-        
         print(f"User {username} registered successfully.")
-        return response
+        return jsonify({"message": "User registered successfully"}), 201
     except Exception as e:
-        logging.error(f"Error during registration: {e}")
-        return jsonify({"error": str(e)}), 500
+        print(f"Error: {e}")
+        return jsonify({"error": "Internal server error"}), 500
     finally:
-        cursor.close()
         conn.close()
 
 @app.route('/login', methods=['POST'])
@@ -78,7 +64,7 @@ def login():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT PasswordHash FROM Accounts WHERE Username = ?", (username,))
+        cursor.execute("SELECT Password FROM Accounts WHERE Username = ?", (username,))
         row = cursor.fetchone()
 
         if row and check_password_hash(row[0], password):

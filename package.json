@@ -8,12 +8,29 @@
   "scripts": {
     "start": "npm run build && electron .",
     "build": "tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "package": "electron-builder",
+    "dist": "npm run clean && npm run build && electron-builder"
   },
   "devDependencies": {
     "@types/electron": "^1.6.12",
     "@types/node": "^22.9.0",
-    "electron": "^33.2.0",
+    "electron": "^33.2.1",
+    "electron-builder": "^24.6.2",
     "typescript": "^5.6.3"
+  },
+  "build": {
+    "appId": "com.example.typescriptelectronapp",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   }
 }

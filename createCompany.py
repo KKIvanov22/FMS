@@ -1,32 +1,34 @@
-import sqlite3
+import firebase_admin
+from firebase_admin import credentials, db
 
-DATABASE = 'data/accounts.db'
+cred = credentials.Certificate("adminsdk.json")
+firebase_admin.initialize_app(cred, {
+    "databaseURL": "https://noit10-bks-default-rtdb.europe-west1.firebasedatabase.app/"
+})
 
 def create_companies_table():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Companies (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL UNIQUE
-    )
-    ''')
-
-    conn.commit()
-    conn.close()
+    """Ensure the 'Companies' node exists in the database."""
+    ref = db.reference('Companies')
+    if not ref.get():
+        ref.set({})
+        print("'Companies' node initialized in Firebase.")
+    else:
+        print("'Companies' node already exists in Firebase.")
 
 def register_company(name):
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    """Register a company in Firebase."""
+    ref = db.reference('Companies')
+    companies = ref.get()
 
-    cursor.execute('INSERT INTO Companies (name) VALUES (?)', (name,))
+    if companies and name in companies.values():
+        print(f"Company '{name}' already exists.")
+        return
 
-    conn.commit()
-    conn.close()
+    new_id = len(companies or []) + 1 
+    ref.update({str(new_id): name})
+    print(f"Company '{name}' registered successfully.")
 
 if __name__ == "__main__":
     create_companies_table()
     company_name = input("Enter the name of the company: ")
     register_company(company_name)
-    print(f"Company '{company_name}' registered successfully.")

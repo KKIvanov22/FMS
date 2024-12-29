@@ -6,6 +6,8 @@ import logging
 from flask_cors import CORS
 import subprocess
 
+companyCookie = "default_company"
+
 cred = credentials.Certificate("adminsdk.json")
 firebase_admin.initialize_app(cred, {
     "databaseURL": "https://noit10-bks-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -50,7 +52,7 @@ def register():
         print(f"User {username} registered successfully.")
         response = make_response(jsonify({"message": "registered successful"}), 200)
         response.set_cookie("username", username, httponly=False, samesite='None', secure=True)
-        return jsonify({"message": "User registered successfully"}), 201
+        return response
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Internal server error"}), 500
@@ -61,7 +63,6 @@ def login():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
-
     if not username or not password:
         print("Missing username or password.")
         return jsonify({"error": "Missing username or password"}), 400
@@ -86,6 +87,7 @@ def login():
 def get_user():
     print("User endpoint called.")
     username = request.cookies.get('username')
+    print(f"Username from cookies: {username}")
 
     if not username:
         print("Username not found in cookies.")
@@ -97,6 +99,10 @@ def get_user():
 
         if user:
             print(f"User data for {username} fetched successfully.")
+            print(user)
+            global companyCookie 
+            companyCookie = user.get("Company")
+            print(companyCookie)
             return jsonify(user), 200
         else:
             print(f"User {username} not found.")
@@ -105,10 +111,67 @@ def get_user():
         logging.error(f"Error fetching user data: {e}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/hello', methods=['GET'])
-def hello():
-    print("Hello endpoint called.")
-    return jsonify({"message": "Hello from the backend!"})
+@app.route('/update_company', methods=['PUT'])
+def update_company():
+    print("Update company endpoint called.")
+    username = request.cookies.get('username')
+    data = request.get_json()
+    new_company = data.get("company")
+
+    if not username:
+        print("Username not found in cookies.")
+        return jsonify({"error": "Username not found in cookies"}), 400
+
+    if not new_company:
+        print("New company not provided.")
+        return jsonify({"error": "New company not provided"}), 400
+
+    try:
+        ref = db.reference(f'Accounts/{username}')
+        user = ref.get()
+
+        if user:
+            ref.update({"Company": new_company})
+            print(f"Company for user {username} updated successfully to {new_company}.")
+            return jsonify({"message": "Company updated successfully"}), 200
+        else:
+            print(f"User {username} not found.")
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        logging.error(f"Error updating company: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/add_team', methods=['POST'])
+def add_team():
+    print("Add team endpoint called.")
+    print(request.get_json())
+    data = request.get_json()
+    print("Received data:", data)  
+    company = companyCookie
+    team_name = data.get("teamName")
+    members = data.get("members")
+
+    if not company or not team_name or not members:
+        print("Missing company, team name, or members.")
+        return jsonify({"error": "Missing company, team name, or members"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams')
+        teams = ref.get() or {}
+
+        if team_name in teams:
+            print(f"Team {team_name} already exists in company {company}.")
+            return jsonify({"error": "Team already exists"}), 409
+
+        ref.child(team_name).set({
+            "Members": members
+        })
+
+        print(f"Team {team_name} added successfully to company {company}.")
+        return jsonify({"message": "Team added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding team: {e}")
+        return jsonify({"error": str(e)}), 500
 
 def run_electron():
     try:

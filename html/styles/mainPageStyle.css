@@ -1,15 +1,84 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #f1f1f1;
+    background-color: #4CAF50;
+    color: white;
 }
 
 .username, .company {
     font-size: 1.2em;
     font-weight: bold;
+}
+
+#updateCompanyButton, #createTeamButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#updateCompanyButton:hover, #createTeamButton:hover {
+    background-color: #45a049;
+}
+
+#updateCompanyModal, #createTeamModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+#updateCompanyModal div, #createTeamModal div {
+    margin-bottom: 15px;
+}
+
+#updateCompanyModal label, #createTeamModal label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#updateCompanyModal input, #createTeamModal input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#submitUpdate, #closeModal, #submitTeam, #closeTeamModal {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+#submitUpdate:hover, #closeModal:hover, #submitTeam:hover, #closeTeamModal:hover {
+    background-color: #45a049;
 }

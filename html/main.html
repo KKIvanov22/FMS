@@ -12,6 +12,36 @@
         <div class="company" id="company"></div>
     </div>
 
-    <script src="../dist/company.js" defer></script>
+    <button id="updateCompanyButton">Update Company</button>
+    <button id="createTeamButton" >Create Team</button>
+
+    <div id="updateCompanyModal" style="display: none;">
+        <div>
+            <label for="updateUsername">Username:</label>
+            <input type="text" id="updateUsername">
+        </div>
+        <div>
+            <label for="updateCompany">New Company:</label>
+            <input type="text" id="updateCompany">
+        </div>
+        <button id="submitUpdate">Submit</button>
+        <button id="closeModal">Close</button>
+    </div>
+
+    <div id="createTeamModal" style="display: none;">
+        <div>
+            <label for="teamName">Team Name:</label>
+            <input type="text" id="teamName">
+        </div>
+        <div>
+            <label for="teamMembers">Team Members (comma separated):</label>
+            <input type="text" id="teamMembers">
+        </div>
+        <button id="submitTeam">Submit</button>
+        <button id="closeTeamModal">Close</button>
+    </div>
+
+    <script src="../dist/company.js"></script>
+    <script src="../dist/teams.js"></script>
 </body>
 </html>

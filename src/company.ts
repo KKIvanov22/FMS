@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         if (response.ok) {
             const userData = await response.json();
-            console.log('Received userData:', userData); // Add this line to log the userData object
+            console.log('Received userData:', userData); 
             const usernameElement = document.getElementById('username');
             const companyElement = document.getElementById('company');
             const updateCompanyButton = document.getElementById('updateCompanyButton');

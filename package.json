@@ -32,5 +32,8 @@
     "win": {
       "target": "nsis"
     }
+  },
+  "dependencies": {
+    "@google-cloud/translate": "^8.5.0"
   }
 }

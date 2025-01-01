@@ -170,6 +170,66 @@ def add_team():
         logging.error(f"Error adding team: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/get_teams', methods=['GET'])
+def get_teams():
+    print("Get teams endpoint called.")
+    company = request.args.get('company')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams')
+        teams = ref.get()
+
+        if teams:
+            print(f"Teams for company {company} fetched successfully.")
+            return jsonify(teams), 200
+        else:
+            print(f"No teams found for company {company}.")
+            return jsonify({"error": "No teams found"}), 404
+    except Exception as e:
+        logging.error(f"Error fetching teams: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/update_team', methods=['PUT'])
+def update_team():
+    print("Update team endpoint called.")
+    data = request.get_json()
+    company = data.get("company")
+    old_team_name = data.get("oldTeamName")
+    new_team_name = data.get("newTeamName")
+    members = data.get("members")
+
+    if not company or not old_team_name or not new_team_name or not members:
+        print("Missing company, old team name, new team name, or members.")
+        return jsonify({"error": "Missing company, old team name, new team name, or members"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams')
+        teams = ref.get() or {}
+
+        if old_team_name not in teams:
+            print(f"Team {old_team_name} does not exist in company {company}.")
+            return jsonify({"error": "Team does not exist"}), 404
+
+        if old_team_name != new_team_name and new_team_name in teams:
+            print(f"Team {new_team_name} already exists in company {company}.")
+            return jsonify({"error": "New team name already exists"}), 409
+
+        if old_team_name != new_team_name:
+            ref.child(old_team_name).delete()
+        ref.child(new_team_name).set({
+            "Members": members
+        })
+
+        print(f"Team {old_team_name} updated successfully to {new_team_name} in company {company}.")
+        return jsonify({"message": "Team updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating team: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

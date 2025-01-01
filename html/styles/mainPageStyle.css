@@ -35,7 +35,7 @@ body {
     background-color: #45a049;
 }
 
-#updateCompanyModal, #createTeamModal {
+#updateCompanyModal, #createTeamModal, #updateTeamModal {
     display: none;
     position: fixed;
     top: 50%;
@@ -49,17 +49,17 @@ body {
     z-index: 1000;
 }
 
-#updateCompanyModal div, #createTeamModal div {
+#updateCompanyModal div, #createTeamModal div, #updateTeamModal div {
     margin-bottom: 15px;
 }
 
-#updateCompanyModal label, #createTeamModal label {
+#updateCompanyModal label, #createTeamModal label, #updateTeamModal label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-#updateCompanyModal input, #createTeamModal input {
+#updateCompanyModal input, #createTeamModal input, #updateTeamModal input {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
@@ -67,7 +67,7 @@ body {
     border-radius: 5px;
 }
 
-#submitUpdate, #closeModal, #submitTeam, #closeTeamModal {
+#submitUpdate, #closeModal, #submitTeam, #closeTeamModal, #submitUpdateTeam, #closeUpdateTeamModal {
     padding: 10px 20px;
     font-size: 1em;
     color: white;
@@ -79,6 +79,6 @@ body {
     margin-right: 10px;
 }
 
-#submitUpdate:hover, #closeModal:hover, #submitTeam:hover, #closeTeamModal:hover {
+#submitUpdate:hover, #closeModal:hover, #submitTeam:hover, #closeTeamModal:hover, #submitUpdateTeam:hover, #closeUpdateTeamModal:hover {
     background-color: #45a049;
 }

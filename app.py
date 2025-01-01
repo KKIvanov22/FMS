@@ -230,6 +230,91 @@ def update_team():
         logging.error(f"Error updating team: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/update_user', methods=['PUT'])
+def update_user():
+    print("Update user endpoint called.")
+    username = request.cookies.get('username')
+    data = request.get_json()
+    new_email = data.get("email")
+    new_password = data.get("password")
+    new_role = data.get("role")
+    new_role_in_company = data.get("roleInCompany")
+
+    if not username:
+        print("Username not found in cookies.")
+        return jsonify({"error": "Username not found in cookies"}), 400
+
+    if not new_email and not new_password and not new_role and not new_role_in_company:
+        print("No new data provided to update.")
+        return jsonify({"error": "No new data provided to update"}), 400
+
+    try:
+        ref = db.reference(f'Accounts/{username}')
+        user = ref.get()
+
+        if user:
+            updates = {}
+            if new_email:
+                updates["Email"] = new_email
+            if new_password:
+                updates["Password"] = generate_password_hash(new_password)
+            if new_role:
+                updates["Role"] = new_role
+            if new_role_in_company:
+                updates["RoleInCompany"] = new_role_in_company
+
+            ref.update(updates)
+            print(f"User {username} updated successfully.")
+            return jsonify({"message": "User updated successfully"}), 200
+        else:
+            print(f"User {username} not found.")
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        logging.error(f"Error updating user: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/update_user_role', methods=['PUT'])
+def update_user_role():
+    print("Update user role endpoint called.")
+    current_username = request.cookies.get('username')
+    data = request.get_json()
+    target_username = data.get("username")
+    new_role = data.get("role")
+
+    if not current_username:
+        print("Current username not found in cookies.")
+        return jsonify({"error": "Current username not found in cookies"}), 400
+
+    if not target_username or not new_role:
+        print("Target username or new role not provided.")
+        return jsonify({"error": "Target username or new role not provided"}), 400
+
+    try:
+        current_user_ref = db.reference(f'Accounts/{current_username}')
+        current_user = current_user_ref.get()
+
+        if not current_user:
+            print(f"Current user {current_username} not found.")
+            return jsonify({"error": "Current user not found"}), 404
+
+        target_user_ref = db.reference(f'Accounts/{target_username}')
+        target_user = target_user_ref.get()
+
+        if not target_user:
+            print(f"Target user {target_username} not found.")
+            return jsonify({"error": "Target user not found"}), 404
+
+        updates = {
+            "Company": current_user["Company"],
+            "Role": new_role
+        }
+        target_user_ref.update(updates)
+        print(f"User {target_username} updated successfully with new role {new_role} and company {current_user['Company']}.")
+        return jsonify({"message": "User role and company updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating user role: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

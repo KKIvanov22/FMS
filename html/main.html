@@ -14,6 +14,7 @@
 
     <button id="updateCompanyButton" style="display: none;">Update Company</button>
     <button id="createTeamButton" style="display: none;" >Create Team</button>
+    <button id="updateUserRoleButton" style="display: none;">Update User Role</button>
 
     <div id="updateCompanyModal" style="display: none;">
         <div>
@@ -54,10 +55,28 @@
         <button id="closeUpdateTeamModal">Close</button>
     </div>
 
+    <div id="updateUserRoleModal" style="display: none;">
+        <div>
+            <label for="updateUserRoleUsername">Username:</label>
+            <input type="text" id="updateUserRoleUsername">
+        </div>
+        <div>
+            <label for="updateUserRole">New Role:</label>
+            <select id="updateUserRole">
+                <option value="teamleader">Team Leader</option>
+                <option value="employee">Employee</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <button id="submitUpdateUserRole">Submit</button>
+        <button id="closeUpdateUserRoleModal">Close</button>
+    </div>
+
     <div id="teamsList"></div> 
 
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>
+    <script src="../dist/updateUserRole.js"></script>
     <script src="../dist/translation.js"></script>
 </body>
 </html>

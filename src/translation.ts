@@ -19,7 +19,8 @@ const translations: Translations = {
   "Update Company": "Актуализиране на компанията",
   "Create Team": "Създаване на екип",
   "Update Team": "Актуализиране на екипа",
-  "Teams List": "Списък с екипи"
+  "Teams List": "Списък с екипи",
+  "Update User Role": "Актуализиране на ролята на потребителя",
 };
 
 document.addEventListener('DOMContentLoaded', async () => {

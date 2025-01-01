@@ -5,19 +5,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         if (response.ok) {
             const userData = await response.json();
+            console.log('Received userData:', userData); // Add this line to log the userData object
             const usernameElement = document.getElementById('username');
             const companyElement = document.getElementById('company');
             const updateCompanyButton = document.getElementById('updateCompanyButton');
             const updateCompanyModal = document.getElementById('updateCompanyModal');
             const submitUpdateButton = document.getElementById('submitUpdate');
             const closeModalButton = document.getElementById('closeModal');
-
+            
             if (usernameElement && companyElement) {
-                usernameElement.textContent = userData.username;
-                companyElement.textContent = userData.company;
+                usernameElement.textContent = userData.Email;
+                companyElement.textContent = userData.Company;
             }
 
-            if (userData.role === 'admin' && updateCompanyButton) {
+            if (userData.Role === 'admin' && updateCompanyButton) {
                 updateCompanyButton.style.display = 'block';
             }
 
@@ -46,21 +47,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         if (updateResponse.ok) {
                             alert('Company updated successfully');
-                            updateCompanyModal!.style.display = 'none';
-                        } else {
-                            alert('Failed to update company');
                         }
                     } catch (error) {
-                        console.error('Error:', error);
+                        console.error('Error updating company:', error);
                     }
-                } else {
-                    alert('Please fill in both fields');
                 }
             });
         } else {
-            console.error('Failed to fetch user data');
+            console.error('Failed to fetch user data:', response.statusText);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching user data:', error);
     }
 });

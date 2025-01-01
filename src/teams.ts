@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const createTeamModal = document.getElementById('createTeamModal');
             const submitTeamButton = document.getElementById('submitTeam');
             const closeTeamModalButton = document.getElementById('closeTeamModal');
-            if (userData.roleInCompany === 'admin' && createTeamButton) {
+            if (userData.RoleInCompany === 'admin' && createTeamButton) {
                 createTeamButton.style.display = 'block';
             }
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             submitTeamButton?.addEventListener('click', async () => {
                 const teamName = (document.getElementById('teamName') as HTMLInputElement).value;
                 const teamMembers = (document.getElementById('teamMembers') as HTMLInputElement).value.split(',');
-                const company = userData.company;
+                const company = userData.Company;
                 if (teamName && teamMembers.length > 0) {
                     try {
                         const teamResponse = await fetch('http://localhost:5000/add_team', {

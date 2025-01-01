@@ -99,10 +99,7 @@ def get_user():
 
         if user:
             print(f"User data for {username} fetched successfully.")
-            print(user)
-            global companyCookie 
-            companyCookie = user.get("Company")
-            print(companyCookie)
+            print(user)        
             return jsonify(user), 200
         else:
             print(f"User {username} not found.")
@@ -147,7 +144,7 @@ def add_team():
     print(request.get_json())
     data = request.get_json()
     print("Received data:", data)  
-    company = companyCookie
+    company = data.get("company")
     team_name = data.get("teamName")
     members = data.get("members")
 

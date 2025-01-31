@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (userData.Role === 'admin' && updateCompanyButton) {
                 updateCompanyButton.style.display = 'block';
             }
-
+            
             updateCompanyButton?.addEventListener('click', () => {
                 updateCompanyModal!.style.display = 'block';
             });

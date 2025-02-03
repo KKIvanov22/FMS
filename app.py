@@ -336,6 +336,34 @@ def add_team_material():
         logging.error(f"Error adding materials: {e}")
         return jsonify({"error": str(e)}), 500  
 
+@app.route('/get_team_material', methods=['GET'])
+def get_team_material():
+    print("Get team material endpoint called.")
+    company = request.args.get('company')
+    team = request.args.get('team')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    if not team:
+        print("Team not provided.")
+        return jsonify({"error": "Team not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team}/Materials')
+        materials = ref.get()
+
+        if materials:
+            print(f"Materials for team {team} in company {company} fetched successfully.")
+            return jsonify(materials), 200
+        else:
+            print(f"No materials found for team {team} in company {company}.")
+            return jsonify({"error": "No materials found"}), 404
+    except Exception as e:
+        logging.error(f"Error fetching materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

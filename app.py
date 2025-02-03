@@ -315,6 +315,27 @@ def update_user_role():
         logging.error(f"Error updating user role: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/add_team_material', methods=['POST'])
+def add_team_material():
+    print("Add team material endpoint called.")
+    data = request.get_json()
+    target_company = data.get("company")
+    target_team = data.get("team")
+    materials = data.get("materials")
+
+    if not target_company or not target_team or not materials:
+        print("Missing company, team, or materials.")
+        return jsonify({"error": "Missing company, team, or materials"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{target_company}/Teams/{target_team}/Materials')
+        ref.set(materials)
+        print(f"Materials added successfully to team {target_team} in company {target_company}.")
+        return jsonify({"message": "Materials added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding materials: {e}")
+        return jsonify({"error": str(e)}), 500  
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

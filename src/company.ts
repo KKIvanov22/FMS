@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             submitUpdateButton?.addEventListener('click', async () => {
                 const updateUsername = (document.getElementById('updateUsername') as HTMLInputElement).value;
                 const updateCompany = (document.getElementById('updateCompany') as HTMLInputElement).value;
-
                 if (updateUsername && updateCompany) {
                     try {
                         const updateResponse = await fetch('http://localhost:5000/update_company', {

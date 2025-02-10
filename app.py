@@ -364,6 +364,102 @@ def get_team_material():
         logging.error(f"Error fetching materials: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/update_team_material', methods=['POST'])
+def update_team_material():
+    print("Update team material endpoint called.")
+    data = request.get_json()
+    company = data.get('company')
+    team = data.get('team')
+    materials = data.get('materials')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    if not team:
+        print("Team not provided.")
+        return jsonify({"error": "Team not provided"}), 400
+
+    if not materials:
+        print("Materials not provided.")
+        return jsonify({"error": "Materials not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team}/Materials')
+        ref.set(materials)
+        print(f"Materials for team {team} in company {company} updated successfully.")
+        return jsonify({"message": "Materials updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/add_company_material', methods=['POST'])
+def add_company_material():
+    print("Add company material endpoint called.")
+    data = request.get_json()
+    company = data.get("company")
+    materials = data.get("materials")
+
+    if not company or not materials:
+        print("Missing company or materials.")
+        return jsonify({"error": "Missing company or materials"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Materials')
+        ref.set(materials)
+        print(f"Materials added successfully to company {company}.")
+        return jsonify({"message": "Materials added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_company_material', methods=['GET'])
+def get_company_material():
+    print("Get company material endpoint called.")
+    company = request.args.get('company')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Materials')
+        materials = ref.get()
+
+        if materials:
+            print(f"Materials for company {company} fetched successfully.")
+            return jsonify(materials), 200
+        else:
+            print(f"No materials found for company {company}.")
+            return jsonify({"error": "No materials found"}), 404
+    except Exception as e:
+        logging.error(f"Error fetching materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/update_company_material', methods=['POST'])
+def update_company_material():
+    print("Update company material endpoint called.")
+    data = request.get_json()
+    company = data.get('company')
+    materials = data.get('materials')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    if not materials:
+        print("Materials not provided.")
+        return jsonify({"error": "Materials not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Materials')
+        ref.set(materials)
+        print(f"Materials for company {company} updated successfully.")
+        return jsonify({"message": "Materials updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

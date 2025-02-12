@@ -72,7 +72,7 @@ def login():
         user = ref.get()
 
         if user and check_password_hash(user["Password"], password):
-            response = make_response(jsonify({"message": "Login successful"}), 200)
+            response = make_response(jsonify({"message": "Login successful", "role": user["Role"]}), 200)
             response.set_cookie("username", username, httponly=False, samesite='None', secure=True)
             print(f"User {username} logged in successfully.")
             return response
@@ -458,6 +458,45 @@ def update_company_material():
         return jsonify({"message": "Materials updated successfully"}), 200
     except Exception as e:
         logging.error(f"Error updating materials: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_companies', methods=['GET'])
+def get_companies():
+    try:
+        ref = db.reference('Companies')
+        companies = ref.get()
+        company_list = [{"name": name} for name in companies.keys()]
+        return jsonify(company_list), 200
+    except Exception as e:
+        logging.error(f"Error fetching companies: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/update_company_name', methods=['PUT'])
+def update_company_name():
+    data = request.get_json()
+    old_name = data.get('oldName')
+    new_name = data.get('newName')
+
+    if not old_name or not new_name:
+        return jsonify({"error": "Old name and new name are required"}), 400
+
+    try:
+        ref = db.reference('Companies')
+        companies = ref.get()
+
+        if old_name not in companies:
+            return jsonify({"error": "Company not found"}), 404
+
+        if new_name in companies:
+            return jsonify({"error": "New company name already exists"}), 409
+
+        company_data = companies.pop(old_name)
+        ref.child(old_name).delete()
+        ref.child(new_name).set(company_data)
+
+        return jsonify({"message": "Company name updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating company name: {e}")
         return jsonify({"error": str(e)}), 500
 
 def run_electron():

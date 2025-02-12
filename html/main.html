@@ -4,75 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>app</title>
-    <link rel="stylesheet" href="./styles/mainPageStyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="header">
-        <div class="username" id="username"></div>
-        <div class="company" id="company"></div>
+<body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
+    <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
+        <div class="username font-bold text-lg" id="username"></div>
+        <div class="company font-bold text-lg" id="company"></div>
     </div>
 
-    <button id="updateCompanyButton" style="display: none;">Update Company</button>
-    <button id="createTeamButton" style="display: none;" >Create Team</button>
-    <button id="updateUserRoleButton" style="display: none;">Update User Role</button>
-
-    <div id="updateCompanyModal" style="display: none;">
-        <div>
-            <label for="updateUsername">Username:</label>
-            <input type="text" id="updateUsername">
-        </div>
-        <div>
-            <label for="updateCompany">New Company:</label>
-            <input type="text" id="updateCompany">
-        </div>
-        <button id="submitUpdate">Submit</button>
-        <button id="closeModal">Close</button>
+    <div class="container mx-auto mt-8">
+        <button id="updateCompanyButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Company</button>
+        <button id="createTeamButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Team</button>
+        <button id="updateUserRoleButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update User Role</button>
     </div>
 
-    <div id="createTeamModal" style="display: none;">
-        <div>
-            <label for="teamName">Team Name:</label>
-            <input type="text" id="teamName">
+    <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="updateUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
+                <input type="text" id="updateUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="updateCompany" class="block text-gray-300 font-bold mb-2">New Company:</label>
+                <input type="text" id="updateCompany" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="flex justify-end">
+                <button id="submitUpdate" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
         </div>
-        <div>
-            <label for="teamMembers">Team Members (comma separated):</label>
-            <input type="text" id="teamMembers">
+    </div>
+    
+    <div id="createTeamModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="teamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
+                <input type="text" id="teamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="teamMembers" class="block text-gray-300 font-bold mb-2">Team Members (comma separated):</label>
+                <input type="text" id="teamMembers" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="flex justify-end">
+                <button id="submitTeam" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeTeamModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
         </div>
-        <button id="submitTeam">Submit</button>
-        <button id="closeTeamModal">Close</button>
     </div>
 
-    <div id="updateTeamModal" style="display: none;">
-        <div>
-            <label for="updateTeamName">Team Name:</label>
-            <input type="text" id="updateTeamName">
+    <div id="updateTeamModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="updateTeamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
+                <input type="text" id="updateTeamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="updateTeamMembers" class="block text-gray-300 font-bold mb-2">Team Members (comma separated):</label>
+                <input type="text" id="updateTeamMembers" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="flex justify-end">
+                <button id="submitUpdateTeam" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeUpdateTeamModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
         </div>
-        <div>
-            <label for="updateTeamMembers">Team Members (comma separated):</label>
-            <input type="text" id="updateTeamMembers">
-        </div>
-        <button id="submitUpdateTeam">Submit</button>
-        <button id="closeUpdateTeamModal">Close</button>
     </div>
 
-    <div id="updateUserRoleModal" style="display: none;">
-        <div>
-            <label for="updateUserRoleUsername">Username:</label>
-            <input type="text" id="updateUserRoleUsername">
+    <div id="updateUserRoleModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="updateUserRoleUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
+                <input type="text" id="updateUserRoleUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="updateUserRole" class="block text-gray-300 font-bold mb-2">New Role:</label>
+                <select id="updateUserRole" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                    <option value="teamleader">Team Leader</option>
+                    <option value="employee">Employee</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="flex justify-end">
+                <button id="submitUpdateUserRole" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeUpdateUserRoleModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
         </div>
-        <div>
-            <label for="updateUserRole">New Role:</label>
-            <select id="updateUserRole">
-                <option value="teamleader">Team Leader</option>
-                <option value="employee">Employee</option>
-                <option value="admin">Admin</option>
-            </select>
-        </div>
-        <button id="submitUpdateUserRole">Submit</button>
-        <button id="closeUpdateUserRoleModal">Close</button>
     </div>
 
-    <div id="teamsList"></div> 
+    <div id="teamsList" class="container mx-auto mt-8"></div> 
 
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>

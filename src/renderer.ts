@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         if (response.ok) {
           alert('Login successful');
-          window.location.href = './html/main.html';
+          if (result.role === 'admin') {
+            window.location.href = './html/adminPage.html';
+          } else {
+            window.location.href = './html/main.html';
+          }
         } else {
           console.error(`Login failed: ${result.error}`);
           alert(`Login failed: ${result.error}`);

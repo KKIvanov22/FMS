@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-extrabold mb-6 text-center">Admin Page</h1>
+        <div id="company-list-container" class="space-y-4"></div>
+    </div>
+
+    <div id="update-company-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold mb-4">Update Company Name</h2>
+            <input type="text" id="new-company-name" placeholder="New Company Name" class="w-full p-3 border border-gray-600 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-gray-500 mb-4">
+            <div class="flex justify-end space-x-4">
+                <button id="cancel-update" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Cancel</button>
+                <button id="confirm-update" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../dist/adminPage.js"></script>
+
+</body>
+</html>

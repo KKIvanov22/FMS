@@ -499,6 +499,38 @@ def update_company_name():
         logging.error(f"Error updating company name: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/add_team_tasks', methods=['POST'])
+def add_team_tasks():
+    print("Add team tasks endpoint called.")
+    data = request.get_json()
+    company = data.get("company")
+    team_name = data.get("teamName")
+    task_name = data.get("taskName")
+    description = data.get("description")
+
+    if not company or not team_name or not task_name or not description:
+        print("Missing company, team name, task name, or description.")
+        return jsonify({"error": "Missing company, team name, task name, or description"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team_name}/Tasks')
+        tasks = ref.get() or {}
+
+        if task_name in tasks:
+            print(f"Task {task_name} already exists in team {team_name} of company {company}.")
+            return jsonify({"error": "Task already exists"}), 409
+
+        ref.child(task_name).set({
+            "Description": description,
+            "isDone": 0
+        })
+
+        print(f"Task {task_name} added successfully to team {team_name} in company {company}.")
+        return jsonify({"message": "Task added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding task: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

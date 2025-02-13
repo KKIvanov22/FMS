@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>app</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        footer {
+            margin-top: auto;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
@@ -42,8 +57,8 @@
                 <input type="text" id="teamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
             </div>
             <div class="mb-4">
-                <label for="teamMembers" class="block text-gray-300 font-bold mb-2">Team Members (comma separated):</label>
-                <input type="text" id="teamMembers" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                <label class="block text-gray-300 font-bold mb-2">Team Members:</label>
+                <div id="teamMembersList" class="flex flex-wrap"></div>
             </div>
             <div class="flex justify-end">
                 <button id="submitTeam" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
@@ -59,12 +74,34 @@
                 <input type="text" id="updateTeamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
             </div>
             <div class="mb-4">
-                <label for="updateTeamMembers" class="block text-gray-300 font-bold mb-2">Team Members (comma separated):</label>
-                <input type="text" id="updateTeamMembers" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                <label class="block text-gray-300 font-bold mb-2">Team Members:</label>
+                <div id="updateTeamMembersList" class="flex flex-wrap"></div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-300 font-bold mb-2">Tasks:</label>
+                <div id="teamTasksList" class="flex flex-col space-y-2"></div>
             </div>
             <div class="flex justify-end">
+                <button id="assignTaskButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Assign Task</button>
                 <button id="submitUpdateTeam" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
                 <button id="closeUpdateTeamModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="assignTaskModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="taskName" class="block text-gray-300 font-bold mb-2">Task Name:</label>
+                <input type="text" id="taskName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="taskDescription" class="block text-gray-300 font-bold mb-2">Task Description:</label>
+                <textarea id="taskDescription" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button id="submitTask" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeAssignTaskModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
         </div>
     </div>
@@ -90,11 +127,33 @@
         </div>
     </div>
 
-    <div id="teamsList" class="container mx-auto mt-8"></div> 
+    <div id="teamsList" class="container mx-auto mt-8 flex flex-col items-center space-y-4"></div>
+
+    <footer class="bg-gray-800 text-gray-400 p-4 text-center">
+        <a href="#" id="supportLink" class="hover:text-gray-300">Support</a>
+    </footer>
+    
+    <div id="supportModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="supportName" class="block text-gray-300 font-bold mb-2">Name:</label>
+                <input type="text" id="supportName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="mb-4">
+                <label for="supportDescription" class="block text-gray-300 font-bold mb-2">Description:</label>
+                <textarea id="supportDescription" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button id="submitSupport" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Send</button>
+                <button id="closeSupportModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>
     <script src="../dist/updateUserRole.js"></script>
     <script src="../dist/translation.js"></script>
+    <script src="../dist/supportMain.js"></script>
 </body>
 </html>

@@ -26,8 +26,8 @@ def register():
     password = data.get("password")
     email = data.get("email")
     company = data.get("company", "default_company")
-    role = data.get("role", "default_role")
-    role_in_company = data.get("roleInCompany", "default_role_in_company")
+    role = data.get("role", "employee")
+    role_in_company = data.get("roleInCompany", "employee")
 
     if not username or not password or not email:
         print("Missing username, password, or email.")
@@ -529,6 +529,110 @@ def add_team_tasks():
         return jsonify({"message": "Task added successfully"}), 200
     except Exception as e:
         logging.error(f"Error adding task: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_users', methods=['GET'])
+def get_users():
+    try:
+        ref = db.reference('Accounts')
+        users = ref.get()
+        user_list = [{"username": username} for username in users.keys()]
+        return jsonify(user_list), 200
+    except Exception as e:
+        logging.error(f"Error fetching users: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_team_tasks', methods=['GET'])
+def get_team_tasks():
+    print("Get team tasks endpoint called.")
+    company = request.args.get('company')
+    team = request.args.get('team')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    if not team:
+        print("Team not provided.")
+        return jsonify({"error": "Team not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team}/Tasks')
+        tasks = ref.get()
+
+        if tasks:
+            print(f"Tasks for team {team} in company {company} fetched successfully.")
+            return jsonify(tasks), 200
+        else:
+            print(f"No tasks found for team {team} in company {company}.")
+            return jsonify({"error": "No tasks found"}), 404
+    except Exception as e:
+        logging.error(f"Error fetching tasks: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_employee_tasks', methods=['GET'])
+def get_employee_tasks():
+    print("Get employee tasks endpoint called.")
+    username = request.cookies.get('username')
+
+    if not username:
+        print("Username not found in cookies.")
+        return jsonify({"error": "Username not found in cookies"}), 400
+
+    try:
+        ref = db.reference(f'Accounts/{username}')
+        user = ref.get()
+
+        if not user:
+            print(f"User {username} not found.")
+            return jsonify({"error": "User not found"}), 404
+
+        if user["RoleInCompany"] != "employee":
+            print(f"User {username} is not an employee.")
+            return jsonify({"error": "User is not an employee"}), 403
+
+        company = user["Company"]
+        teams_ref = db.reference(f'Companies/{company}/Teams')
+        teams = teams_ref.get()
+
+        if not teams:
+            print(f"No teams found for company {company}.")
+            return jsonify({"error": "No teams found"}), 404
+
+        employee_tasks = {}
+        for team_name, team_data in teams.items():
+            if username in team_data.get("Members", []):
+                tasks_ref = db.reference(f'Companies/{company}/Teams/{team_name}/Tasks')
+                tasks = tasks_ref.get()
+                if tasks:
+                    employee_tasks[team_name] = tasks
+
+        print(f"Tasks for employee {username} fetched successfully.")
+        return jsonify(employee_tasks), 200
+    except Exception as e:
+        logging.error(f"Error fetching employee tasks: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/add_support', methods=['POST'])
+def add_support():
+    data = request.get_json()
+    name = data.get('name')
+    description = data.get('description')
+    done = data.get('done', False)
+
+    if not name or not description:
+        return jsonify({"error": "Name and description are required"}), 400
+
+    try:
+        ref = db.reference('Support')
+        ref.push({
+            "Name": name,
+            "Description": description,
+            "Done": done
+        })
+        return jsonify({"message": "Support request added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding support request: {e}")
         return jsonify({"error": str(e)}), 500
 
 def run_electron():

@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const updateTeamMembersList = document.getElementById('updateTeamMembersList');
             let currentTeamName = '';
 
-            // Fetch all users for team member selection
             const usersResponse = await fetch('http://localhost:5000/get_users', {
                 credentials: 'include'
             });
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (teamsResponse.ok) {
                     const teams = await teamsResponse.json();
                     if (teamsList) {
-                        teamsList.innerHTML = ''; // Clear existing teams
+                        teamsList.innerHTML = ''; 
                         for (const [teamName, teamData] of Object.entries(teams)) {
                             const teamItem = document.createElement('button');
                             const team = teamData as { Members: string[] };

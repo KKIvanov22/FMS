@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const taskDescriptionInput = document.getElementById('taskDescription') as HTMLTextAreaElement;
             let currentTeamName = '';
 
-            // Fetch all users for team member selection
             const usersResponse = await fetch('http://localhost:5000/get_users', {
                 credentials: 'include'
             });

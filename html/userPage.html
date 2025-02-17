@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
+    <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
+        <div class="username font-bold text-lg" id="username"></div>
+        <div class="company font-bold text-lg" id="company"></div>
+    </div>
+
+    <div class="container mx-auto mt-8">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Edit Your Information</h2>
+            <form id="editUserInfoForm">
+                <div class="mb-4">
+                    <label for="editUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
+                    <input type="text" id="editUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                </div>
+                <div class="mb-4">
+                    <label for="editEmail" class="block text-gray-300 font-bold mb-2">Email:</label>
+                    <input type="email" id="editEmail" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                </div>
+                <div class="mb-4">
+                    <label for="editPassword" class="block text-gray-300 font-bold mb-2">Password:</label>
+                    <input type="password" id="editPassword" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Save Changes</button>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="button" id="linkGoogleAccount" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500">Link Google Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../dist/userPage.js"></script>
+</body>
+</html>

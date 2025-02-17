@@ -8,21 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentSupportId: string | null = null;
 
-    fetch('http://localhost:5000/get_support')
-        .then(response => response.json())
-        .then((data: { [key: string]: { Name: string, Description: string, Done: boolean } }) => {
+    async function fetchSupportData() {
+        try {
+            const response = await fetch('http://localhost:5000/get_support');
+            const data = await response.json();
             if (supportListContainer) {
                 supportListContainer.innerHTML = '';
                 for (const [id, support] of Object.entries(data)) {
                     const supportItem = document.createElement('div');
                     supportItem.className = 'p-4 bg-gray-800 rounded cursor-pointer hover:bg-gray-700';
-                    supportItem.textContent = support.Name;
+                    supportItem.textContent = (support as { Name: string }).Name;
                     supportItem.addEventListener('click', () => {
                         currentSupportId = id;
                         if (supportDescription) {
-                            supportDescription.textContent = support.Description;
+                            supportDescription.textContent = (support as { Description: string }).Description;
                         }
-                        supportDoneCheckbox.checked = support.Done;
+                        supportDoneCheckbox.checked = (support as { Done: boolean }).Done;
                         if (updateSupportPopup) {
                             updateSupportPopup.classList.remove('hidden');
                         }
@@ -30,17 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     supportListContainer.appendChild(supportItem);
                 }
             }
-        })
-        .catch(error => console.error('Error fetching support requests:', error));
+        } catch (error) {
+            console.error('Error fetching support requests:', error);
+        }
+    }
+
+    fetchSupportData();
 
     if (cancelSupportUpdateButton) {
         cancelSupportUpdateButton.addEventListener('click', () => {
             if (updateSupportPopup) {
-                if (updateSupportPopup) {
-                    if (updateSupportPopup) {
-                        updateSupportPopup.classList.add('hidden');
-                    }
-                }
+                updateSupportPopup.classList.add('hidden');
             }
         });
     }
@@ -64,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     console.log('Support request updated:', data);
                     if (updateSupportPopup) {
-                    updateSupportPopup.classList.add('hidden');
+                        updateSupportPopup.classList.add('hidden');
                     }
                     location.reload();
                 })
@@ -72,4 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    setInterval(fetchSupportData, 3600000);
 });

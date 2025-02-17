@@ -82,3 +82,5 @@ async function updateCompanyName() {
 document.addEventListener('DOMContentLoaded', fetchCompanies);
 cancelUpdateButton?.addEventListener('click', closeUpdatePopup);
 confirmUpdateButton?.addEventListener('click', updateCompanyName);
+
+setInterval(fetchCompanies, 3600000);

@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const usernameField = document.getElementById('editUsername') as HTMLInputElement;
     const emailField = document.getElementById('editEmail') as HTMLInputElement;
     const passwordField = document.getElementById('editPassword') as HTMLInputElement;
-    const linkGoogleAccountButton = document.getElementById('linkGoogleAccount') as HTMLButtonElement;
+    const editButton = document.getElementById('editButton') as HTMLButtonElement;
+    const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
 
     fetch('http://localhost:5000/user', {
         method: 'GET',
@@ -20,8 +21,24 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error fetching user data:', error));
 
+    editButton.addEventListener('click', () => {
+        usernameField.disabled = false;
+        emailField.disabled = false;
+        passwordField.disabled = false;
+        
+        editButton.style.display = "none";  
+        saveButton.style.display = "block"; 
+    });
+
     editUserInfoForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
+
+        usernameField.disabled = true;
+        emailField.disabled = true;
+        passwordField.disabled = true;
+
+        editButton.style.display = "block"; 
+        saveButton.style.display = "none";  
 
         const updatedUserInfo = {
             email: emailField.value,
@@ -46,6 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error updating user information:', error));
     });
-
-    
 });

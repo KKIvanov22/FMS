@@ -7,35 +7,140 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
-    <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
-        <div class="username font-bold text-lg" id="username"></div>
-        <div class="company font-bold text-lg" id="company"></div>
-    </div>
-
-    <div class="container mx-auto mt-8">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold mb-4">Edit Your Information</h2>
-            <form id="editUserInfoForm">
+    <div style="display: flex;" class="mt-10">
+        <div style="width: 40vw;">
+            <div class="bg-gray-700 ml-48" style="border-radius: 100%; width:20vw; height:20vw"></div>
+            
+            <form action="" class="ml-5" id="editUserInfoForm">
                 <div class="mb-4">
-                    <label for="editUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
-                    <input type="text" id="editUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                    <label for="editUsername" class="block text-gray-300 font-bold mb-2">Username</label>
+                    <input type="text" id="editUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
+                        placeholder="Username" disabled>
                 </div>
                 <div class="mb-4">
                     <label for="editEmail" class="block text-gray-300 font-bold mb-2">Email:</label>
-                    <input type="email" id="editEmail" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                    <input type="email" id="editEmail" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
+                        placeholder="Email" disabled>
                 </div>
                 <div class="mb-4">
                     <label for="editPassword" class="block text-gray-300 font-bold mb-2">Password:</label>
-                    <input type="password" id="editPassword" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                    <input type="password" id="editPassword" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
+                        placeholder="Password" disabled>
                 </div>
                 <div class="flex justify-end">
-                    <button type="submit" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Save Changes</button>
-                </div>
-                <div class="flex justify-end mt-4">
-                    <button type="button" id="linkGoogleAccount" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500">Link Google Account</button>
+                    <button id="editButton" type="button" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">
+                        Edit Information
+                    </button>
+                    <button id="saveButton" type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-500 ml-2" 
+                        style="display: none;">
+                        Save Changes
+                    </button>
                 </div>
             </form>
         </div>
+
+        <div style="height: 100vh; width:2px; margin-top:-4.5vh;" class="ml-5 bg-gray-800"></div>
+
+        <div style="display: block; margin-top:1vh;">
+            <div class="ml-5" style="width: 60vw; margin-top:-3vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; "><img src="./images/googleLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Google account.
+                    By connecting your Google account, you acknowledge and agree that your 
+                    Google ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Google content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:10vw; margin-left:-2.4vw; margin-top:-1vh;"><img src="./images/appleLogo.png" alt=""></div>
+                    <div style="width: 40vw; margin-left: -1.8vw;">Press "link" to link your active FMS account with Apple account.
+                    By connecting your Apple account, you acknowledge and agree that your 
+                    Apple ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Apple content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkToApple" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; "><img src="./images/microsoftLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
+                    By connecting your Microsoft account, you acknowledge and agree that your 
+                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Microsoft content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkToMicrosoft" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; "><img src="./images/ciscoLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
+                    By connecting your Microsoft account, you acknowledge and agree that your 
+                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Microsoft content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkTocisco" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; "><img src="./images/teamsLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
+                    By connecting your Microsoft account, you acknowledge and agree that your 
+                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Microsoft content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkToteams" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; "><img src="./images/outlookLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
+                    By connecting your Microsoft account, you acknowledge and agree that your 
+                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Microsoft content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkTooutlook" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+            </div>
+
+            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
+                <div style="display: flex; height:12vh;">
+                    <div style="width:5vw; margin-top:1.5vh"><img src="./images/gmailLogo.png" alt=""></div>
+                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
+                    By connecting your Microsoft account, you acknowledge and agree that your 
+                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Microsoft content you view while
+                    your accounts are connected. If you do not want this information shared,
+                    please disconnect your accounts.</div>
+                    <button id="linkToGmail" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
+                </div>
+            </div>
+        </div>
+            
+        
     </div>
 
     <script src="../dist/userPage.js"></script>

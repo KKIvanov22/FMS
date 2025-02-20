@@ -6,7 +6,6 @@ import logging
 import requests
 from flask_cors import CORS
 import subprocess
-from google_auth_oauthlib.flow import Flow
 
 companyCookie = "default_company"
 
@@ -241,12 +240,13 @@ def update_user():
     new_password = data.get("password")
     new_role = data.get("role")
     new_role_in_company = data.get("roleInCompany")
+    new_profile_picture_url = data.get("profilePictureUrl")
 
     if not username:
         print("Username not found in cookies.")
         return jsonify({"error": "Username not found in cookies"}), 400
 
-    if not new_email and not new_password and not new_role and not new_role_in_company:
+    if not new_email and not new_password and not new_role and not new_role_in_company and not new_profile_picture_url:
         print("No new data provided to update.")
         return jsonify({"error": "No new data provided to update"}), 400
 
@@ -264,6 +264,8 @@ def update_user():
                 updates["Role"] = new_role
             if new_role_in_company:
                 updates["RoleInCompany"] = new_role_in_company
+            if new_profile_picture_url:
+                updates["ProfilePictureUrl"] = new_profile_picture_url
 
             ref.update(updates)
             print(f"User {username} updated successfully.")
@@ -273,48 +275,6 @@ def update_user():
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
         logging.error(f"Error updating user: {e}")
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/update_user_role', methods=['PUT'])
-def update_user_role():
-    print("Update user role endpoint called.")
-    current_username = request.cookies.get('username')
-    data = request.get_json()
-    target_username = data.get("username")
-    new_role = data.get("role")
-
-    if not current_username:
-        print("Current username not found in cookies.")
-        return jsonify({"error": "Current username not found in cookies"}), 400
-
-    if not target_username or not new_role:
-        print("Target username or new role not provided.")
-        return jsonify({"error": "Target username or new role not provided"}), 400
-
-    try:
-        current_user_ref = db.reference(f'Accounts/{current_username}')
-        current_user = current_user_ref.get()
-
-        if not current_user:
-            print(f"Current user {current_username} not found.")
-            return jsonify({"error": "Current user not found"}), 404
-
-        target_user_ref = db.reference(f'Accounts/{target_username}')
-        target_user = target_user_ref.get()
-
-        if not target_user:
-            print(f"Target user {target_username} not found.")
-            return jsonify({"error": "Target user not found"}), 404
-
-        updates = {
-            "Company": current_user["Company"],
-            "Role": new_role
-        }
-        target_user_ref.update(updates)
-        print(f"User {target_username} updated successfully with new role {new_role} and company {current_user['Company']}.")
-        return jsonify({"message": "User role and company updated successfully"}), 200
-    except Exception as e:
-        logging.error(f"Error updating user role: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/add_team_material', methods=['POST'])

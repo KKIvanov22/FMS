@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log('Received userData:', userData); 
                 const usernameElement = document.getElementById('username');
                 const companyElement = document.getElementById('company');
+                const profilePictureElement = document.getElementById('profilePicture') as HTMLImageElement;
                 const updateCompanyButton = document.getElementById('updateCompanyButton');
                 const updateCompanyModal = document.getElementById('updateCompanyModal');
                 const submitUpdateButton = document.getElementById('submitUpdate');
@@ -17,6 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (usernameElement && companyElement) {
                     usernameElement.textContent = userData.Email;
                     companyElement.textContent = userData.Company;
+                }
+
+                if (profilePictureElement && userData.ProfilePictureUrl) {
+                    profilePictureElement.src = userData.ProfilePictureUrl;
                 }
 
                 if (userData.Role === 'admin' && updateCompanyButton) {

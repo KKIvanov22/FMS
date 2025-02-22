@@ -35,6 +35,29 @@
         <button id="updateCompanyButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Company</button>
         <button id="createTeamButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Team</button>
         <button id="updateUserRoleButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update User Role</button>
+        <button id="createChatButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
+    </div>
+
+    <div id="chatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
+            <div class="mb-4">
+                <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Participants:</label>
+                <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
+            </div>
+            <div class="mb-4">
+                <label for="selectedParticipants" class="block text-gray-300 font-bold mb-2">Selected Participants:</label>
+                <ul id="selectedParticipants" class="bg-gray-800 text-white mt-2 rounded"></ul>
+            </div>
+            <div class="flex justify-end">
+                <button id="submitChat" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Create Chat</button>
+                <button id="closeChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
+            <div class="mt-4">
+                <h2 class="text-gray-300 font-bold mb-2">Your Chats:</h2>
+                <ul id="chatList" class="list-disc list-inside text-gray-300"></ul>
+            </div>
+        </div>
     </div>
 
     <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
@@ -159,5 +182,6 @@
     <script src="../dist/updateUserRole.js"></script>
     <script src="../dist/translation.js"></script>
     <script src="../dist/supportMain.js"></script>
+    <script src="../dist/chat.js"></script>
 </body>
 </html>

@@ -496,10 +496,14 @@ def add_team_tasks():
 
 @app.route('/get_users', methods=['GET'])
 def get_users():
+    query = request.args.get('query', '').lower()
     try:
         ref = db.reference('Accounts')
         users = ref.get()
-        user_list = [{"username": username} for username in users.keys()]
+        if query:
+            user_list = [{"username": username} for username in users.keys() if query in username.lower()]
+        else:
+            user_list = [{"username": username} for username in users.keys()]
         return jsonify(user_list), 200
     except Exception as e:
         logging.error(f"Error fetching users: {e}")
@@ -696,6 +700,34 @@ def send_message():
         return jsonify({"message": "Message sent"}), 200
     except Exception as e:
         logging.error(f"Error sending message: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_chats', methods=['GET'])
+def get_chats():
+    username = request.cookies.get('username')
+    if not username:
+        return jsonify({"error": "Username not found in cookies"}), 400
+
+    try:
+        user_chats_ref = db.reference(f'Accounts/{username}/Chats')
+        user_chats = user_chats_ref.get() or {}
+
+        if not isinstance(user_chats, dict):
+            return jsonify({"error": "Invalid data format for user chats"}), 500
+
+        chats = {}
+        for chat_id in user_chats.keys():
+            chat_ref = db.reference(f'Chats/{chat_id}')
+            chat_data = chat_ref.get()
+            if chat_data:
+                chats[chat_id] = {
+                    "Participants": chat_data.get("Participants", []),
+                    "Messages": chat_data.get("Messages", [])
+                }
+
+        return jsonify(chats), 200
+    except Exception as e:
+        logging.error(f"Error fetching chats: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/get_messages', methods=['GET'])

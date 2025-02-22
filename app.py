@@ -6,6 +6,7 @@ import logging
 import requests
 from flask_cors import CORS
 import subprocess
+from datetime import datetime
 
 companyCookie = "default_company"
 
@@ -640,6 +641,75 @@ def update_support():
         return jsonify({"message": "Support request updated successfully"}), 200
     except Exception as e:
         logging.error(f"Error updating support request: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/create_chat', methods=['POST'])
+def create_chat():
+    data = request.get_json()
+    participants = data.get('participants')
+
+    if not participants or not isinstance(participants, list):
+        return jsonify({"error": "Participants must be a list"}), 400
+
+    try:
+        chats_ref = db.reference('Chats')
+        all_chats = chats_ref.get() or {}
+        chat_id = len(all_chats)  
+        chat_ref = chats_ref.child(str(chat_id))
+
+        chat_ref.set({
+            "Participants": participants,
+            "Messages": []
+        })
+
+        for participant in participants:
+            accounts_chats_ref = db.reference(f'Accounts/{participant}/Chats')
+            accounts_chats_ref.update({str(chat_id): True})
+
+        return jsonify({"message": "Chat created", "chatId": chat_id}), 200
+    except Exception as e:
+        logging.error(f"Error creating chat: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    data = request.get_json()
+    chat_id = data.get('chatId')
+    message = data.get('message')
+    sender = data.get('sender')
+
+    if chat_id is None or not message or not sender:
+        return jsonify({"error": "chatId, message, and sender are required"}), 400
+
+    try:
+        chat_ref = db.reference(f'Chats/{chat_id}/Messages')
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        new_message = {
+            "message": message,
+            "sender": sender,
+            "time": timestamp
+        }
+        messages = chat_ref.get() or []
+        messages.append(new_message)
+        chat_ref.set(messages)
+
+        return jsonify({"message": "Message sent"}), 200
+    except Exception as e:
+        logging.error(f"Error sending message: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get_messages', methods=['GET'])
+def get_messages():
+    chat_id = request.args.get('chatId')
+    if chat_id is None:
+        return jsonify({"error": "chatId is required"}), 400
+
+    try:
+        chat_ref = db.reference(f'Chats/{chat_id}/Messages')
+        messages = chat_ref.get() or []
+        return jsonify(messages), 200
+    except Exception as e:
+        logging.error(f"Error fetching messages: {e}")
         return jsonify({"error": str(e)}), 500
 
 def run_electron():

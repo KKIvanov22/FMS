@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Login form found');
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const username = (document.getElementById('login-username') as HTMLInputElement).value;
+      const email = (document.getElementById('login-email') as HTMLInputElement).value;
       const password = (document.getElementById('login-password') as HTMLInputElement).value;
 
       try {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ email, password })
         });
 
         const result = await response.json();

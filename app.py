@@ -1,5 +1,5 @@
 import firebase_admin
-from firebase_admin import credentials, db
+from firebase_admin import credentials, db, auth
 from flask import Flask, jsonify, request, make_response, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 import logging
@@ -22,7 +22,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 @app.route('/register', methods=['POST'])
 def register():
-    print("Register endpoint called.")
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
@@ -32,79 +31,67 @@ def register():
     role_in_company = data.get("roleInCompany", "employee")
 
     if not username or not password or not email:
-        print("Missing username, password, or email.")
         return jsonify({"error": "Missing username, password, or email"}), 400
 
     try:
+        user_record = auth.create_user(email=email, password=password, display_name=username)
         ref = db.reference('Accounts')
-        users = ref.get() or {}
-        if username in users or any(user.get("Email") == email for user in users.values()):
-            print(f"Username {username} or email {email} already exists.")
-            return jsonify({"error": "Username or email already exists"}), 409
-
-        password_hash = generate_password_hash(password)
-        ref.child(username).set({
-            "Password": password_hash,
+        ref.child(user_record.uid).set({
+            "Username": username,
             "Email": email,
             "Company": company,
             "Role": role,
             "RoleInCompany": role_in_company
         })
-
-        print(f"User {username} registered successfully.")
         response = make_response(jsonify({"message": "registered successful"}), 200)
-        response.set_cookie("username", username, httponly=False, samesite='None', secure=True)
+        response.set_cookie("user_id", user_record.uid, httponly=False, samesite='None', secure=True)
         return response
     except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/login', methods=['POST'])
 def login():
-    print("Login endpoint called.")
     data = request.get_json()
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
-    if not username or not password:
-        print("Missing username or password.")
-        return jsonify({"error": "Missing username or password"}), 400
-
+    if not email or not password:
+        return jsonify({"error": "Missing email or password"}), 400
+    
     try:
-        ref = db.reference(f'Accounts/{username}')
-        user = ref.get()
-
-        if user and check_password_hash(user["Password"], password):
-            response = make_response(jsonify({"message": "Login successful", "role": user["Role"]}), 200)
-            response.set_cookie("username", username, httponly=False, samesite='None', secure=True)
-            print(f"User {username} logged in successfully.")
+        user_record = auth.get_user_by_email(email)
+        user_data = db.reference('Accounts').child(user_record.uid).get()
+        if user_data:
+            response = make_response(jsonify({
+                "message": "Login successful",
+                "role": user_data.get("Role")
+            }), 200)
+            response.set_cookie("user_id", user_record.uid, httponly=False, samesite='None', secure=True)
             return response
         else:
-            print(f"Invalid username or password for user {username}.")
-            return jsonify({"error": "Invalid username or password"}), 401
+            return jsonify({"error": "User not found"}), 404
     except Exception as e:
-        logging.error(f"Error during login: {e}")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 401
 
 @app.route('/user', methods=['GET'])
 def get_user():
     print("User endpoint called.")
-    username = request.cookies.get('username')
-    print(f"Username from cookies: {username}")
+    user_id = request.cookies.get('user_id')
+    print(f"user_id from cookies: {user_id}")
 
-    if not username:
-        print("Username not found in cookies.")
-        return jsonify({"error": "Username not found in cookies"}), 400
+    if not user_id:
+        print("User ID not found in cookies.")
+        return jsonify({"error": "User ID not found in cookies"}), 400
 
     try:
-        ref = db.reference(f'Accounts/{username}')
+        ref = db.reference(f'Accounts/{user_id}')
         user = ref.get()
 
         if user:
-            print(f"User data for {username} fetched successfully.")
+            print(f"User data for {user_id} fetched successfully.")
             print(user)        
             return jsonify(user), 200
         else:
-            print(f"User {username} not found.")
+            print(f"User {user_id} not found.")
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
         logging.error(f"Error fetching user data: {e}")
@@ -113,28 +100,31 @@ def get_user():
 @app.route('/update_company', methods=['PUT'])
 def update_company():
     print("Update company endpoint called.")
-    username = request.cookies.get('username')
+    user_id = request.cookies.get('user_id')
     data = request.get_json()
     new_company = data.get("company")
 
-    if not username:
-        print("Username not found in cookies.")
-        return jsonify({"error": "Username not found in cookies"}), 400
+    if not user_id:
+        print("User ID not found in cookies.")
+        return jsonify({"error": "User ID not found in cookies"}), 400
 
     if not new_company:
         print("New company not provided.")
         return jsonify({"error": "New company not provided"}), 400
 
     try:
-        ref = db.reference(f'Accounts/{username}')
+        ref = db.reference(f'Accounts/{user_id}')
         user = ref.get()
 
         if user:
             ref.update({"Company": new_company})
-            print(f"Company for user {username} updated successfully to {new_company}.")
-            return jsonify({"message": "Company updated successfully"}), 200
+            print(f"Company for user {user_id} updated successfully to {new_company}.")
+            return jsonify({
+                "message": "Company updated successfully",
+                "username": user.get("Username")
+            }), 200
         else:
-            print(f"User {username} not found.")
+            print(f"User {user_id} not found.")
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
         logging.error(f"Error updating company: {e}")
@@ -235,7 +225,7 @@ def update_team():
 @app.route('/update_user', methods=['PUT'])
 def update_user():
     print("Update user endpoint called.")
-    username = request.cookies.get('username')
+    user_id = request.cookies.get('user_id')
     data = request.get_json()
     new_email = data.get("email")
     new_password = data.get("password")
@@ -243,16 +233,16 @@ def update_user():
     new_role_in_company = data.get("roleInCompany")
     new_profile_picture_url = data.get("profilePictureUrl")
 
-    if not username:
-        print("Username not found in cookies.")
-        return jsonify({"error": "Username not found in cookies"}), 400
+    if not user_id:
+        print("User ID not found in cookies.")
+        return jsonify({"error": "User ID not found in cookies"}), 400
 
     if not new_email and not new_password and not new_role and not new_role_in_company and not new_profile_picture_url:
         print("No new data provided to update.")
         return jsonify({"error": "No new data provided to update"}), 400
 
     try:
-        ref = db.reference(f'Accounts/{username}')
+        ref = db.reference(f'Accounts/{user_id}')
         user = ref.get()
 
         if user:
@@ -269,10 +259,13 @@ def update_user():
                 updates["ProfilePictureUrl"] = new_profile_picture_url
 
             ref.update(updates)
-            print(f"User {username} updated successfully.")
-            return jsonify({"message": "User updated successfully"}), 200
+            print(f"User {user_id} updated successfully.")
+            return jsonify({
+                "message": "User updated successfully",
+                "username": user.get("Username")
+            }), 200
         else:
-            print(f"User {username} not found.")
+            print(f"User {user_id} not found.")
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
         logging.error(f"Error updating user: {e}")
@@ -496,14 +489,11 @@ def add_team_tasks():
 
 @app.route('/get_users', methods=['GET'])
 def get_users():
-    query = request.args.get('query', '').lower()
+    query = request.args.get('query', '')
     try:
         ref = db.reference('Accounts')
-        users = ref.get()
-        if query:
-            user_list = [{"username": username} for username in users.keys() if query in username.lower()]
-        else:
-            user_list = [{"username": username} for username in users.keys()]
+        users = ref.order_by_child('Username').start_at(query).end_at(query + "\uf8ff").get()
+        user_list = [{"uid": uid, "Username": user_data.get("Username")} for uid, user_data in users.items()]
         return jsonify(user_list), 200
     except Exception as e:
         logging.error(f"Error fetching users: {e}")
@@ -540,42 +530,42 @@ def get_team_tasks():
 @app.route('/get_employee_tasks', methods=['GET'])
 def get_employee_tasks():
     print("Get employee tasks endpoint called.")
-    username = request.cookies.get('username')
+    user_id = request.cookies.get('user_id')
 
-    if not username:
-        print("Username not found in cookies.")
-        return jsonify({"error": "Username not found in cookies"}), 400
+    if not user_id:
+        print("User ID not found in cookies.")
+        return jsonify({"error": "User ID not found in cookies"}), 400
 
     try:
-        ref = db.reference(f'Accounts/{username}')
+        ref = db.reference(f'Accounts/{user_id}')
         user = ref.get()
 
         if not user:
-            print(f"User {username} not found.")
             return jsonify({"error": "User not found"}), 404
 
-        if user["RoleInCompany"] != "employee":
-            print(f"User {username} is not an employee.")
-            return jsonify({"error": "User is not an employee"}), 403
+        if user.get("RoleInCompany") != "employee":
+            return jsonify({"error": "Not an employee"}), 403
 
-        company = user["Company"]
+        company = user.get("Company")
         teams_ref = db.reference(f'Companies/{company}/Teams')
         teams = teams_ref.get()
 
         if not teams:
-            print(f"No teams found for company {company}.")
             return jsonify({"error": "No teams found"}), 404
 
         employee_tasks = {}
         for team_name, team_data in teams.items():
-            if username in team_data.get("Members", []):
-                tasks_ref = db.reference(f'Companies/{company}/Teams/{team_name}/Tasks')
-                tasks = tasks_ref.get()
-                if tasks:
-                    employee_tasks[team_name] = tasks
+            tasks_ref = db.reference(f'Companies/{company}/Teams/{team_name}/Tasks')
+            tasks = tasks_ref.get() or {}
+            for task_name, task_info in tasks.items():
+                if "assignedTo" in task_info and task_info["assignedTo"] == user_id:
+                    employee_tasks.setdefault(team_name, {})[task_name] = task_info
 
-        print(f"Tasks for employee {username} fetched successfully.")
-        return jsonify(employee_tasks), 200
+        print(f"Tasks for employee {user_id} fetched successfully.")
+        return jsonify({
+            "tasks": employee_tasks,
+            "username": user.get("Username")
+        }), 200
     except Exception as e:
         logging.error(f"Error fetching employee tasks: {e}")
         return jsonify({"error": str(e)}), 500
@@ -704,28 +694,28 @@ def send_message():
 
 @app.route('/get_chats', methods=['GET'])
 def get_chats():
-    username = request.cookies.get('username')
-    if not username:
-        return jsonify({"error": "Username not found in cookies"}), 400
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        print("User ID not found in cookies.")
+        return jsonify({"error": "User ID not found"}), 400
 
     try:
-        user_chats_ref = db.reference(f'Accounts/{username}/Chats')
+        user_chats_ref = db.reference(f'Accounts/{user_id}/Chats')
         user_chats = user_chats_ref.get() or {}
 
         if not isinstance(user_chats, dict):
-            return jsonify({"error": "Invalid data format for user chats"}), 500
+            return jsonify({"error": "No chats found"}), 404
 
         chats = {}
         for chat_id in user_chats.keys():
-            chat_ref = db.reference(f'Chats/{chat_id}')
-            chat_data = chat_ref.get()
-            if chat_data:
-                chats[chat_id] = {
-                    "Participants": chat_data.get("Participants", []),
-                    "Messages": chat_data.get("Messages", [])
-                }
+            chat_data = db.reference(f'Chats/{chat_id}').get() or {}
+            chats[chat_id] = chat_data
 
-        return jsonify(chats), 200
+        username = db.reference(f'Accounts/{user_id}/Username').get()
+        return jsonify({
+            "chats": chats,
+            "username": username
+        }), 200
     except Exception as e:
         logging.error(f"Error fetching chats: {e}")
         return jsonify({"error": str(e)}), 500
@@ -742,6 +732,31 @@ def get_messages():
         return jsonify(messages), 200
     except Exception as e:
         logging.error(f"Error fetching messages: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/update_user_role', methods=['PUT'])
+def update_user_role():
+    data = request.get_json()
+    username = data.get('username')
+    new_role = data.get('role')
+
+    if not username or not new_role:
+        return jsonify({"error": "Username and new role are required"}), 400
+
+    try:
+        ref = db.reference('Accounts')
+        users = ref.order_by_child('Username').equal_to(username).get()
+
+        if not users:
+            return jsonify({"error": "User not found"}), 404
+
+        user_id = list(users.keys())[0]
+        user_ref = db.reference(f'Accounts/{user_id}')
+        user_ref.update({"Role": new_role})
+
+        return jsonify({"message": "User role updated successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error updating user role: {e}")
         return jsonify({"error": str(e)}), 500
 
 def run_electron():

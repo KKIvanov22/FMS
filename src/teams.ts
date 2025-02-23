@@ -37,12 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     users.forEach((user: any) => {
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
-                        checkbox.id = `user-${user.username}`;
-                        checkbox.value = user.username;
-                        checkbox.checked = selectedUsers.includes(user.username);
+                        checkbox.id = `user-${user.uid}`;
+                        checkbox.value = user.uid;
+                        checkbox.checked = selectedUsers.includes(user.uid);
+
                         const label = document.createElement('label');
-                        label.htmlFor = `user-${user.username}`;
-                        label.textContent = user.username;
+                        label.htmlFor = `user-${user.uid}`;
+                        label.textContent = user.Username; 
+
                         const div = document.createElement('div');
                         div.className = 'mr-4 mb-2';
                         div.appendChild(checkbox);
@@ -107,7 +109,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 const teamItem = document.createElement('div');
                                 const team = teamData as { Members: string[], Tasks: any };
                                 teamItem.className = 'bg-gray-700 p-4 rounded-lg shadow-lg w-full max-w-md text-center mb-4';
-                                teamItem.textContent = `Team: ${teamName}, Members: ${team.Members.join(', ')}`;
+                                const memberUsernames = team.Members.map((memberId) => {
+                                    const matchedUser = users.find((u: any) => u.uid === memberId);
+                                    return matchedUser ? matchedUser.Username : memberId;
+                                });
+                                teamItem.textContent = `Team: ${teamName}, Members: ${memberUsernames.join(', ')}`;
                                 teamItem.addEventListener('click', async () => {
                                     currentTeamName = teamName;
                                     updateTeamNameInput.value = teamName;
@@ -168,7 +174,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             const teamItem = document.createElement('div');
                                             const team = teamData as { Members: string[], Tasks: any };
                                             teamItem.className = 'bg-gray-700 p-4 rounded-lg shadow-lg w-full max-w-md text-center mb-4';
-                                            teamItem.textContent = `Team: ${teamName}, Members: ${team.Members.join(', ')}`;
+                                            const memberUsernames = team.Members.map((memberId) => {
+                                                const matchedUser = users.find((u: any) => u.uid === memberId);
+                                                return matchedUser ? matchedUser.Username : memberId;
+                                            });
+                                            teamItem.textContent = `Team: ${teamName}, Members: ${memberUsernames.join(', ')}`;
                                             teamItem.addEventListener('click', async () => {
                                                 currentTeamName = teamName;
                                                 updateTeamNameInput.value = teamName;
@@ -233,7 +243,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                                             const teamItem = document.createElement('div');
                                             const team = teamData as { Members: string[], Tasks: any };
                                             teamItem.className = 'bg-gray-700 p-4 rounded-lg shadow-lg w-full max-w-md text-center mb-4';
-                                            teamItem.textContent = `Team: ${teamName}, Members: ${team.Members.join(', ')}`;
+                                            const memberUsernames = team.Members.map((memberId) => {
+                                                const matchedUser = users.find((u: any) => u.uid === memberId);
+                                                return matchedUser ? matchedUser.Username : memberId;
+                                            });
+                                            teamItem.textContent = `Team: ${teamName}, Members: ${memberUsernames.join(', ')}`;
                                             teamItem.addEventListener('click', async () => {
                                                 currentTeamName = teamName;
                                                 updateTeamNameInput.value = teamName;

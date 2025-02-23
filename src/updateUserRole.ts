@@ -49,6 +49,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                         },
                         body: JSON.stringify({ username, role })
                     });
+
+                    if (response.ok) {
+                        alert('User role updated successfully');
+                        const updateUserRoleModal = document.getElementById('updateUserRoleModal');
+                        if (updateUserRoleModal) {
+                            updateUserRoleModal.style.display = 'none';
+                        }
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Failed to update user role: ${errorData.error}`);
+                    }
                 });
             }
         } else {

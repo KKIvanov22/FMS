@@ -8,10 +8,10 @@ document.getElementById('closeChatModal')?.addEventListener('click', () => {
 });
 
 document.getElementById('submitChat')?.addEventListener('click', () => {
-    const selectedParticipants = Array.from(document.querySelectorAll('#selectedParticipants li')).map(li => li.textContent || '');
-    const username = getUsernameFromCookies();
-    if (username) {
-        selectedParticipants.push(username);
+    const selectedParticipants = Array.from(document.querySelectorAll('#selectedParticipants li')).map(li => (li as HTMLElement).dataset.uid || '');
+    const userId = getUserIdFromCookies();
+    if (userId) {
+        selectedParticipants.push(userId);
     }
     createChat(selectedParticipants);
 });
@@ -28,11 +28,11 @@ function fetchParticipants(query: string): void {
         const suggestions = document.getElementById('participantSuggestions');
         if (suggestions) {
             suggestions.innerHTML = '';
-            data.forEach((user: { username: string }) => {
+            data.forEach((user: { uid: string, Username: string }) => {
                 const li = document.createElement('li');
-                li.textContent = user.username;
+                li.textContent = user.Username;
                 li.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-700');
-                li.addEventListener('click', () => addParticipant(user.username));
+                li.addEventListener('click', () => addParticipant(user.uid, user.Username));
                 suggestions.appendChild(li);
             });
         }
@@ -40,11 +40,12 @@ function fetchParticipants(query: string): void {
     .catch(error => console.error('Error:', error));
 }
 
-function addParticipant(username: string): void {
+function addParticipant(uid: string, username: string): void {
     const selectedParticipants = document.getElementById('selectedParticipants');
     if (selectedParticipants) {
         const li = document.createElement('li');
         li.textContent = username;
+        li.dataset.uid = uid;
         li.classList.add('p-2', 'bg-gray-600', 'rounded', 'mt-2');
         selectedParticipants.appendChild(li);
     }
@@ -83,9 +84,13 @@ function fetchChats(): void {
         const chatList = document.getElementById('chatList');
         if (chatList) {
             chatList.innerHTML = '';
-            for (const chatId in data) {
+            for (const chatId in data.chats) {
                 const li = document.createElement('li');
-                li.textContent = `Chat ID: ${chatId}, Participants: ${data[chatId].Participants.join(', ')}`;
+                const participants = data.chats[chatId].Participants.map((uid: string) => {
+                    const user = data.users.find((user: { uid: string, Username: string }) => user.uid === uid);
+                    return user ? user.Username : uid;
+                }).join(', ');
+                li.textContent = `Chat ID: ${chatId}, Participants: ${participants}`;
                 chatList.appendChild(li);
             }
         }
@@ -93,8 +98,8 @@ function fetchChats(): void {
     .catch(error => console.error('Error:', error));
 }
 
-function getUsernameFromCookies(): string | null {
-    const name = 'username=';
+function getUserIdFromCookies(): string | null {
+    const name = 'user_id=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(';');
     for (let i = 0; i < ca.length; i++) {

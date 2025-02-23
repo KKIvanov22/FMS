@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from firebase_admin import db, auth
+import logging
 
 def update_user_handler():
     print("Update user endpoint called.")
@@ -22,7 +23,7 @@ def update_user_handler():
     try:
         ref = db.reference(f'Accounts/{user_id}')
         user = ref.get()
-
+        logging.error(f"Error updating user: {e}")
         if user:
             updates = {}
             if new_email:

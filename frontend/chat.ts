@@ -81,6 +81,7 @@ function fetchChats(): void {
     fetch('http://localhost:5000/get_chats')
     .then(response => response.json())
     .then(data => {
+        console.log('Fetched chats:', data); // Add this line
         const chatList = document.getElementById('chatList');
         if (chatList) {
             chatList.innerHTML = '';

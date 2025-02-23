@@ -67,7 +67,7 @@ def update_user_role_handler():
 
         user_id = list(users.keys())[0]
         user_ref = db.reference(f'Accounts/{user_id}')
-        user_ref.update({"Role": new_role})
+        user_ref.update({"RoleInCompany": new_role})
 
         return jsonify({"message": "User role updated successfully"}), 200
     except Exception as e:

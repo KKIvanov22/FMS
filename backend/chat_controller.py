@@ -1,3 +1,4 @@
+import logging
 from flask import jsonify, request
 from firebase_admin import db
 from datetime import datetime

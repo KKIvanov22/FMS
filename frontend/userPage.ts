@@ -79,3 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error updating user information:', error));
     });
 });
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        window.location.href = './main.html';
+    }
+});

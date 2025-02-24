@@ -45,17 +45,17 @@ def send_message_handler():
     data = request.get_json()
     chat_id = data.get('chatId')
     message = data.get('message')
-    sender = data.get('sender')
+    user_id = request.cookies.get('user_id')
 
-    if chat_id is None or not message or not sender:
-        return jsonify({"error": "chatId, message, and sender are required"}), 400
+    if chat_id is None or not message or not user_id:
+        return jsonify({"error": "chatId, message, and user_id are required"}), 400
 
     try:
         chat_ref = db.reference(f'Chats/{chat_id}/Messages')
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_message = {
             "message": message,
-            "sender": sender,
+            "sender": user_id,
             "time": timestamp
         }
         messages = chat_ref.get() or []
@@ -66,7 +66,6 @@ def send_message_handler():
     except Exception as e:
         logging.error(f"Error sending message: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 def get_chats_handler():
     logging.debug("get_chats_handler called")

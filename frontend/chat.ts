@@ -40,9 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             sendMessageButton.addEventListener('click', () => {
                 const messageInput = document.getElementById('newMessage') as HTMLTextAreaElement;
                 const message = messageInput.value;
-                const userId = getUserIdFromCookies();
-                if (currentChatId && userId && message) {
-                    sendMessage(currentChatId, message, userId);
+                if (currentChatId && message) {
+                    sendMessage(currentChatId, message);
                     messageInput.value = '';
                 }
             });
@@ -166,13 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => alert('Error fetching messages: ' + error));
     }
 
-    function sendMessage(chatId: string, message: string, sender: string): void {
+    function sendMessage(chatId: string, message: string): void {
         fetch('http://localhost:5000/send_message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ chatId, message, sender })
+            body: JSON.stringify({ chatId, message })
         })
         .then(response => response.json())
         .then(data => {

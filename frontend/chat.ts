@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let currentChatId: string | null = null;
+    let fetchMessagesInterval: ReturnType<typeof setInterval> | null = null;
+
     document.getElementById('createChatButton')?.addEventListener('click', () => {
         document.getElementById('chatModal')?.classList.remove('hidden');
         fetchChats();
@@ -21,6 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById('chatParticipants') as HTMLInputElement;
         fetchParticipants(input.value);
     });
+
+    document.getElementById('closeIndividualChatModal')?.addEventListener('click', () => {
+        document.getElementById('individualChatModal')?.classList.add('hidden');
+        if (fetchMessagesInterval) {
+            clearInterval(fetchMessagesInterval);
+        }
+    });
+
+    setupSendMessageButton();
+
+    function setupSendMessageButton(): void {
+        const sendMessageButton = document.getElementById('sendMessageButton');
+        if (sendMessageButton) {
+            sendMessageButton.addEventListener('click', () => {
+                const messageInput = document.getElementById('newMessage') as HTMLTextAreaElement;
+                const message = messageInput.value;
+                const userId = getUserIdFromCookies();
+                if (currentChatId && userId && message) {
+                    sendMessage(currentChatId, message, userId);
+                    messageInput.value = '';
+                }
+            });
+        }
+    }
 
     function fetchParticipants(query: string): void {
         fetch(`http://localhost:5000/get_users?query=${query}`)
@@ -79,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function fetchChats(): void {
-        alert('Fetching chats...');
         fetch('http://localhost:5000/get_chats')
         .then(response => {
             if (!response.ok) {
@@ -88,14 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            alert('Fetched chats: ' + JSON.stringify(data));
             const chatList = document.getElementById('chatList');
             if (chatList) {
                 chatList.innerHTML = '';
                 for (const chatId in data.chats) {
                     const li = document.createElement('li');
                     const participants = data.chats[chatId].Participants.map((uid: string) => {
-                        // Check if data.users is defined and find the user
                         if (data.users) {
                             const user = data.users.find((user: { uid: string, Username: string }) => user.uid === uid);
                             return user ? user.Username : uid;
@@ -104,11 +128,61 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }).join(', ');
                     li.textContent = `Chat ID: ${chatId}, Participants: ${participants}`;
+                    li.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-700');
+                    li.addEventListener('click', () => openChat(chatId, participants));
                     chatList.appendChild(li);
                 }
             }
         })
         .catch(error => alert('Error fetching chats: ' + error));
+    }
+
+    function openChat(chatId: string, participants: string): void {
+        currentChatId = chatId;
+        document.getElementById('individualChatModal')?.classList.remove('hidden');
+        document.getElementById('chatTitle')!.textContent = `Chat with ${participants}`;
+        fetchMessages();
+        if (fetchMessagesInterval) {
+            clearInterval(fetchMessagesInterval);
+        }
+        fetchMessagesInterval = setInterval(fetchMessages, 3000);
+    }
+
+    function fetchMessages(): void {
+        if (!currentChatId) return;
+        fetch(`http://localhost:5000/get_messages?chatId=${currentChatId}`)
+        .then(response => response.json())
+        .then(data => {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.innerHTML = '';
+                data.forEach((message: { message: string, sender: string, time: string }) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${message.time} - ${message.sender}: ${message.message}`;
+                    chatMessages.appendChild(li);
+                });
+            }
+        })
+        .catch(error => alert('Error fetching messages: ' + error));
+    }
+
+    function sendMessage(chatId: string, message: string, sender: string): void {
+        fetch('http://localhost:5000/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ chatId, message, sender })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                fetchMessages();
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => alert('Error sending message: ' + error));
     }
 
     function getUserIdFromCookies(): string | null {

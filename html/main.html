@@ -177,6 +177,23 @@
         </div>
     </div>
 
+    <div id="individualChatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
+            <div class="mb-4">
+                <h2 id="chatTitle" class="text-gray-300 font-bold mb-2">Chat</h2>
+                <ul id="chatMessages" class="bg-gray-800 text-white mt-2 rounded p-2 h-64 overflow-y-scroll"></ul>
+            </div>
+            <div class="mb-4">
+                <label for="newMessage" class="block text-gray-300 font-bold mb-2">New Message:</label>
+                <textarea id="newMessage" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button id="sendMessageButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Send</button>
+                <button id="closeIndividualChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>
     <script src="../dist/updateUserRole.js"></script>

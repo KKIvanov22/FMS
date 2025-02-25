@@ -23,25 +23,25 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
-    <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
-        <div class="username font-bold text-lg" id="username"></div>
-        <div class="company font-bold text-lg" id="company"></div>
-        <a href="./userPage.html">
-            <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-10 h-10 rounded-full">
-        </a>
-    </div>
+        <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
+            <div class="username font-bold text-lg" id="username"></div>
+            <div class="company font-bold text-lg" id="company"></div>
+            <a href="./userPage.html">
+                <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-10 h-10 rounded-full">
+            </a>
+        </div>
 
-    <div class="container mx-auto mt-8">
-        <button id="updateCompanyButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Company</button>
-        <button id="createTeamButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Team</button>
-        <button id="updateUserRoleButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update User Role</button>
-        <button id="createChatButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
-    </div>
+        <div class="container mx-auto mt-8">
+            <button id="updateCompanyButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Company</button>
+            <button id="createTeamButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Team</button>
+            <button id="updateUserRoleButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update User Role</button>
+            <button id="createChatButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
+        </div>
 
     <div id="chatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
             <div class="mb-4">
-                <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Participants:</label>
+                <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Select participants:</label>
                 <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
                 <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
             </div>
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+   <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
             <div class="mb-4">
                 <label for="updateUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
@@ -77,8 +77,8 @@
         </div>
     </div>
     
-    <div id="createTeamModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div id="createTeamModal" class="hidden fixed flex items-center justify-center" style="width: 100vw; height: 90vh;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="teamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
                 <input type="text" id="teamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
@@ -94,8 +94,8 @@
         </div>
     </div>
 
-    <div id="updateTeamModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div id="updateTeamModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="updateTeamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
                 <input type="text" id="updateTeamName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
@@ -116,8 +116,8 @@
         </div>
     </div>
     
-    <div id="assignTaskModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div id="assignTaskModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="taskName" class="block text-gray-300 font-bold mb-2">Task Name:</label>
                 <input type="text" id="taskName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
@@ -133,8 +133,8 @@
         </div>
     </div>
 
-    <div id="updateUserRoleModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div id="updateUserRoleModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="updateUserRoleUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
                 <input type="text" id="updateUserRoleUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
@@ -147,7 +147,7 @@
                     <option value="admin">Admin</option>
                 </select>
             </div>
-            <div class="flex justify-end">
+             <div class="flex justify-end">
                 <button id="submitUpdateUserRole" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
                 <button id="closeUpdateUserRoleModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
@@ -158,16 +158,16 @@
 
     <footer class="bg-gray-800 text-gray-400 p-4 text-center">
         <a href="#" id="supportLink" class="hover:text-gray-300">Support</a>
-    </footer>
+    </footer> 
     
-    <div id="supportModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div id="supportModal" class="hidden flex items-center justify-center" style="height: 90vh;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
-                <label for="supportName" class="block text-gray-300 font-bold mb-2">Name:</label>
+                <label for="supportName" class="block text-gray-300 font-bold mb-2">Your name:</label>
                 <input type="text" id="supportName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
             </div>
             <div class="mb-4">
-                <label for="supportDescription" class="block text-gray-300 font-bold mb-2">Description:</label>
+                <label for="supportDescription" class="block text-gray-300 font-bold mb-2">What's your problem:</label>
                 <textarea id="supportDescription" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"></textarea>
             </div>
             <div class="flex justify-end">
@@ -179,31 +179,24 @@
 
 
 
-    <div id="individualChatModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+    <div id="individualChatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
             <div class="mb-4">
                 <div class="justify-center">
                 <h1 id="chatTitle" class="text-gray-300 font-bold text-2xl">Chat</h1>
-                <div class="flex border-b border-gray-500 items-center">
-                    <div style="margin-left: 40vw; display: flex; align-items: center; margin-top:-4vh; margin-bottom:2vh;" class="flex gap-4">
-                        <a href=""><img style="height: 4vh;" src="./images/icons8-headset-50.png" alt=""></a>
-                        <a href=""><img style="height: 4vh;" src="./images/icons8-video-call-50.png" alt=""></a>
-                        <a href=""><img style="height: 4vh;" src="./images/icons8-info-squared-50.png" alt=""></a>  
-                    </div>
-                </div>
             </div>
                 </div>
                 <ul id="chatMessages" class="bg-gray-800 text-white mt-2 rounded p-2 h-64 overflow-y-scroll" style="height:50vh; width:48vw;"></ul>
                 <div class="flex gap-2">
                     <textarea id="newMessage" class="border border-gray-600 w-full p-2 rounded bg-gray-800 text-white" style="height: 5vh;" placeholder="Message here..."></textarea>
                     <div class="flex justify-end">
-                    <button id="sendMessageButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2" style="height: 5vh;">Send</button>
-                    <button id="closeIndividualChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400" style="height:5vh;">Close</button>
+                    <button id="sendMessageButton" class="flex bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2" style="height: 5vh; align-items: center;">Send</button>
+                    <button id="closeIndividualChatModal" class="flex bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400" style="height:5vh; align-items: center;">Close</button>
             </div>
             </div>
             </div>
-        </div>
-    </div> 
+    </div>
+    </div>
 
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>

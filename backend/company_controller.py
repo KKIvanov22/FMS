@@ -34,11 +34,13 @@ def update_company_handler():
         return jsonify({"error": str(e)}), 500
 
 def get_companies_handler():
-    # ...existing code...
     try:
-        # ...existing code...
+        ref = db.reference('Companies')
+        companies = ref.get()
+        company_list = [{"name": name} for name in companies.keys()]
         return jsonify(company_list), 200
     except Exception as e:
+        logging.error(f"Error fetching companies: {e}")
         return jsonify({"error": str(e)}), 500
 
 def add_company_material_handler():
@@ -53,7 +55,7 @@ def add_company_material_handler():
 
     try:
         ref = db.reference(f'Companies/{company}/Materials')
-        ref.set(materials)
+        ref.push(materials)
         print(f"Materials added successfully to company {company}.")
         return jsonify({"message": "Materials added successfully"}), 200
     except Exception as e:
@@ -71,7 +73,6 @@ def get_company_material_handler():
     try:
         ref = db.reference(f'Companies/{company}/Materials')
         materials = ref.get()
-
         if materials:
             print(f"Materials for company {company} fetched successfully.")
             return jsonify(materials), 200

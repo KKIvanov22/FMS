@@ -35,6 +35,7 @@
         <button id="updateCompanyButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Company</button>
         <button id="createTeamButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Team</button>
         <button id="updateUserRoleButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update User Role</button>
+        <button id="addMaterialsButton" class="hidden bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Manage Materials</button>
         <button id="createChatButton" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
     </div>
 
@@ -177,8 +178,6 @@
         </div>
     </div>
 
-
-
     <div id="individualChatModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
             <div class="mb-4">
@@ -203,7 +202,42 @@
             </div>
             </div>
         </div>
+
     </div> 
+
+    <div id="addMaterialsModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-2/3">
+            <div class="mb-4">
+                <nav class="flex space-x-4">
+                    <button id="addMaterialTab" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Add Material</button>
+                    <button id="manageMaterialTab" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Manage Materials</button>
+                </nav>
+            </div>
+            <div id="addMaterialSection" class="section">
+                <div class="mb-4">
+                    <label for="materialName" class="block text-gray-300 font-bold mb-2">Material Name:</label>
+                    <input type="text" id="materialName" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                </div>
+                <div class="mb-4">
+                    <label for="materialQuantity" class="block text-gray-300 font-bold mb-2">Material Quantity:</label>
+                    <input type="number" id="materialQuantity" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                </div>
+                <div class="flex justify-end">
+                    <button id="submitMaterial" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Send</button>
+                    <button id="closeAddMaterialsModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+                </div>
+            </div>
+            <div id="manageMaterialSection" class="section hidden">
+                <div class="mb-4">
+                    <h2 class="text-gray-300 font-bold mb-2">Materials List:</h2>
+                    <ul id="materialsList" class="bg-gray-800 text-white mt-2 rounded p-2"></ul>
+                </div>
+                <div class="flex justify-end">
+                    <button id="closeManageMaterialsModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>

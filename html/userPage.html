@@ -3,31 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTech</title>
+    <title>FMS</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css">
     <link rel="icon" type="image/png" href="./images/fmsLogo.png">
 
-    <style>
-    #Link::-webkit-scrollbar {
-        width: 0.5vw;
-    }
-
-    #Link::-webkit-scrollbar-track {
-        background-color: transparent;
-        border-radius: 100px;
-    }
-
-    #Link::-webkit-scrollbar-thumb {
-        background-color: oklch(0.446 0.03 256.802);
-        opacity: 75%;
-        border-radius: 100px;
-    }
-    </style>
 </head>
 <body id="Link" class="overflow-y:sroll bg-gray-900 font-sans leading-normal tracking-normal text-white">
     <div style="display: flex;" class="">
         <div style="width: 40vw;" class="flex flex-col content-center">
-            <img style="width: 5vw; margin-top: -1vh;" class="" src="./images/fmsLogo.png" alt="">
+            <img style="width: 3vw;" class="" src="./images/fmsLogo.png" alt="">
             <div style=" display: flex; justify-content: center; align-items: center;" class="flex flex-col content-center justify-center">
                 <div id="profilePicture" class="bg-gray-700" style="border-radius: 100%; width:20vw; height:20vw; margin-top: -5vh;"></div>
                 <input type="text" id="profilePictureUrl" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white mt-2" 
@@ -67,7 +52,7 @@
         <div class="flex flex-col content-center" style="margin-top:1vh; justify-content: space-evenly;">
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
-                    <div style="width:5vw; "><img src="./images/googleLogo.png" alt=""></div>
+                    <div style="width:5vw;" class="mt-1"><img src="./images/googleLogo.png" alt=""></div>
                     <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
                     Press "link" to link your active FMS account with Google account.
                     By connecting your Google account, you acknowledge and agree that your 
@@ -77,12 +62,11 @@
                     please disconnect your accounts.</div>
                     <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700" onclick="signInWithGoogle()">Link</button>
                 </div>
-                <button id="linkToGoogle" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
             </div>
 
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
-                    <div style="width:5vw; "><img src="./images/microsoftLogo.png" alt=""></div>
+                    <div style="width:5vw; "class="mt-1"><img src="./images/microsoftLogo.png" alt=""></div>
                     <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
                         Press "link" to link your active FMS account with Microsoft account.
                         By connecting your Microsoft account, you acknowledge and agree that your 
@@ -94,7 +78,7 @@
             </div>
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
-                    <div style="width:5vw; "><img src="./images/microsoftLogo.png" alt=""></div>
+                    <div style="width:5vw; " class="mt-1"><img src="./images/githubLogo.png" alt=""></div>
                     <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
                         Press "link" to link your active FMS account with Github account.
                         By connecting your Github account, you acknowledge and agree that your 
@@ -108,12 +92,12 @@
             <div class="flex flex-col content-center" style="margin-top:1vh; justify-content: space-evenly;">
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
-                    <div style="width:5vw; "><img src="./images/googleLogo.png" alt=""></div>
+                    <div style="width:5vw; " class="mt-1"><img src="./images/appleLogo.png" alt=""></div>
                     <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
-                    Press "link" to link your active FMS account with Google account.
-                    By connecting your Google account, you acknowledge and agree that your 
-                    Google ID will be publicly visible in the FMS API and that FMS will 
-                    automatically receive information about the Google content you view while
+                    Press "link" to link your active FMS account with Apple account.
+                    By connecting your Apple account, you acknowledge and agree that your 
+                    Apple ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Apple content you view while
                     your accounts are connected. If you do not want this information shared,
                     please disconnect your accounts.</div>
                 </div>

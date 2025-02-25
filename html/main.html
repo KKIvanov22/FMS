@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./images/fmsLogo.png">
-    <title>FinTech</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <title>FMS</title>
     <style>
         body {
             display: flex;
@@ -23,9 +24,11 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
-        <div class="header bg-gray-800 text-white p-4 flex justify-between items-center">
+        <div class="header bg-gray-800 text-white p-4 flex justify-between items-center" style="display: flex; justify-content: space-between;">
+            <div class="w-10 h-10" style="margin-top: -2vh;"><img src="./images/fmsLogo.png" alt=""></div>
             <div class="username font-bold text-lg" id="username"></div>
             <div class="company font-bold text-lg" id="company"></div>
+            <div style="width: 100vw;" class="flex justify-center text-4xl font-mono text-gray-200">FMS</div>
             <a href="./userPage.html">
                 <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-10 h-10 rounded-full">
             </a>

@@ -74,3 +74,22 @@ def get_user_handler():
     except Exception as e:
         logging.error(f"Error fetching user data: {e}")
         return jsonify({"error": str(e)}), 500
+
+def link_google_handler():
+    try:
+        data = request.get_json()
+        id_token = data.get("idToken")
+
+        decoded_token = auth.verify_id_token(id_token)
+        google_uid = decoded_token["uid"]
+
+        current_user = auth.get_user(google_uid)
+
+        google_credential = auth.GoogleAuthProvider.credential(id_token)
+
+        auth.update_user(current_user.uid, provider_to_link=google_credential)
+
+        return jsonify({"message": "Google account linked successfully!"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

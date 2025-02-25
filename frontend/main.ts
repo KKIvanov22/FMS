@@ -6,9 +6,13 @@ function createWindow() {
     width: 1280,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js') 
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
+      webviewTag: true, // Enable <webview> tag
+      sandbox: false // Disable sandbox to allow pop-ups
     },
-    autoHideMenuBar: true 
+    autoHideMenuBar: true
   });
 
   win.loadFile(path.join(__dirname, '../index.html'));

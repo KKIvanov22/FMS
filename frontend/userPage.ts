@@ -1,4 +1,36 @@
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
+
+async function signInWithGoogle() {
+    alert("signInWithGoogle function called");
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        alert("signInWithPopup result: " + JSON.stringify(result));
+        const idToken = await result.user.getIdToken();
+        alert("ID Token: " + idToken);
+
+        const response = await fetch("http://localhost:5000/link-google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken }),
+        });
+
+        const data = await response.json();
+        alert("Backend response: " + JSON.stringify(data));
+        if (response.ok) {
+            alert("Google linked successfully: " + JSON.stringify(data));
+        } else {
+            alert("Error linking Google account: " + data.error);
+        }
+    } catch (error) {
+        alert("Google Sign-In Error: " + error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    alert("DOMContentLoaded event fired");
     const editUserInfoForm = document.getElementById('editUserInfoForm') as HTMLFormElement;
     const usernameField = document.getElementById('editUsername') as HTMLInputElement;
     const emailField = document.getElementById('editEmail') as HTMLInputElement;
@@ -7,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
     const profilePicture = document.getElementById('profilePicture') as HTMLDivElement;
     const profilePictureUrl = document.getElementById('profilePictureUrl') as HTMLInputElement;
+    const linkToGoogleButton = document.getElementById('linkToGoogle') as HTMLButtonElement;
 
     fetch('http://localhost:5000/user', {
         method: 'GET',
@@ -14,8 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
+        alert("User data fetched: " + JSON.stringify(data));
         if (data.error) {
-            console.error(data.error);
+            alert("Error fetching user data: " + data.error);
         } else {
             usernameField.value = data.Username;
             emailField.value = data.Email;
@@ -25,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
-    .catch(error => console.error('Error fetching user data:', error));
+    .catch(error => alert('Error fetching user data: ' + error));
 
     profilePicture.addEventListener('click', () => {
         profilePictureUrl.style.display = 'block';
@@ -69,15 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                console.error(data.error);
+                alert("Error updating user information: " + data.error);
             } else {
                 alert('User information updated successfully');
                 profilePicture.style.backgroundImage = `url(${profilePictureUrl.value})`;
                 profilePicture.style.backgroundSize = 'cover';
             }
         })
-        .catch(error => console.error('Error updating user information:', error));
+        .catch(error => alert('Error updating user information: ' + error));
     });
+
+    linkToGoogleButton.addEventListener('click', signInWithGoogle);
 });
 
 document.addEventListener('keydown', (event) => {

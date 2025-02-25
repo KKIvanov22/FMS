@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from firebase_admin import db
+import logging
 
 def update_company_handler():
     print("Update company endpoint called.")
@@ -34,11 +35,13 @@ def update_company_handler():
         return jsonify({"error": str(e)}), 500
 
 def get_companies_handler():
-    # ...existing code...
     try:
-        # ...existing code...
+        ref = db.reference('Companies')
+        companies = ref.get()
+        company_list = [{"name": name} for name in companies.keys()]
         return jsonify(company_list), 200
     except Exception as e:
+        logging.error(f"Error fetching companies: {e}")
         return jsonify({"error": str(e)}), 500
 
 def add_company_material_handler():
@@ -53,7 +56,7 @@ def add_company_material_handler():
 
     try:
         ref = db.reference(f'Companies/{company}/Materials')
-        ref.set(materials)
+        ref.push(materials)
         print(f"Materials added successfully to company {company}.")
         return jsonify({"message": "Materials added successfully"}), 200
     except Exception as e:
@@ -71,7 +74,6 @@ def get_company_material_handler():
     try:
         ref = db.reference(f'Companies/{company}/Materials')
         materials = ref.get()
-
         if materials:
             print(f"Materials for company {company} fetched successfully.")
             return jsonify(materials), 200
@@ -86,23 +88,24 @@ def update_company_material_handler():
     print("Update company material endpoint called.")
     data = request.get_json()
     company = data.get('company')
-    materials = data.get('materials')
+    material_id = data.get('material_id')
+    material_data = data.get('material_data')
 
     if not company:
         print("Company not provided.")
         return jsonify({"error": "Company not provided"}), 400
 
-    if not materials:
-        print("Materials not provided.")
-        return jsonify({"error": "Materials not provided"}), 400
+    if not material_id or not material_data:
+        print("Material ID or material data not provided.")
+        return jsonify({"error": "Material ID or material data not provided"}), 400
 
     try:
-        ref = db.reference(f'Companies/{company}/Materials')
-        ref.set(materials)
-        print(f"Materials for company {company} updated successfully.")
-        return jsonify({"message": "Materials updated successfully"}), 200
+        ref = db.reference(f'Companies/{company}/Materials/{material_id}')
+        ref.update(material_data)
+        print(f"Material {material_id} for company {company} updated successfully.")
+        return jsonify({"message": "Material updated successfully"}), 200
     except Exception as e:
-        logging.error(f"Error updating materials: {e}")
+        logging.error(f"Error updating material: {e}")
         return jsonify({"error": str(e)}), 500
 
 def update_company_name_handler():

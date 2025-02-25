@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 });
 
-                // Add the logic to handle the materials button and modal
                 if (userData.RoleInCompany === 'admin') {
                     const addMaterialsButton = document.getElementById('addMaterialsButton');
                     const addMaterialsModal = document.getElementById('addMaterialsModal');

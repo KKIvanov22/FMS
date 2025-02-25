@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let currentChatId: string | null = null;
     let fetchMessagesInterval: ReturnType<typeof setInterval> | null = null;
+    let usersMap: Map<string, string> | null = null;
 
     document.getElementById('createChatButton')?.addEventListener('click', () => {
         document.getElementById('chatModal')?.classList.remove('hidden');
@@ -155,14 +156,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const chatMessages = document.getElementById('chatMessages');
             if (chatMessages) {
                 chatMessages.innerHTML = '';
-                data.forEach((message: { message: string, sender: string, time: string }) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${message.time} - ${message.sender}: ${message.message}`;
-                    chatMessages.appendChild(li);
-                });
+                if (!usersMap) {
+                    fetch('http://localhost:5000/get_users')
+                    .then(response => response.json())
+                    .then(usersData => {
+                        usersMap = new Map(usersData.map((user: { uid: string, Username: string }) => [user.uid, user.Username]));
+                        displayMessages(data);
+                    })
+                    .catch(error => alert('Error fetching users: ' + error));
+                } else {
+                    displayMessages(data);
+                }
             }
         })
         .catch(error => alert('Error fetching messages: ' + error));
+    }
+
+    function displayMessages(messages: { message: string, sender: string, time: string }[]): void {
+        const chatMessages = document.getElementById('chatMessages');
+        if (chatMessages && usersMap) {
+            messages.forEach((message) => {
+                const li = document.createElement('li');
+                const senderName = usersMap ? usersMap.get(message.sender) || message.sender : message.sender;
+                li.textContent = `${message.time} - ${senderName}: ${message.message}`;
+                chatMessages.appendChild(li);
+            });
+        }
     }
 
     function sendMessage(chatId: string, message: string): void {

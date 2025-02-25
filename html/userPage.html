@@ -8,33 +8,34 @@
     <link rel="icon" type="image/png" href="./images/fmsLogo.png">
 
     <style>
-        #googleLink::-webkit-scrollbar {
-        width: 12px;
+    #Link::-webkit-scrollbar {
+        width: 0.5vw;
     }
 
-    #googleLink::-webkit-scrollbar-track {
+    #Link::-webkit-scrollbar-track {
         background-color: transparent;
         border-radius: 100px;
     }
 
-    #googleLink::-webkit-scrollbar-thumb {
-        background-color: darkgray;
+    #Link::-webkit-scrollbar-thumb {
+        background-color: oklch(0.446 0.03 256.802);
+        opacity: 75%;
         border-radius: 100px;
     }
     </style>
 </head>
-<body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
-    <div style="display: flex;" class="mt-10">
-        <div style="width: 40vw;">
-            <div>
-                <img style="width: 5vw; margin-top: -3vh;" src="./images/fmsLogo.png" alt="">
-                <div id="profilePicture" class="bg-gray-700 ml-44" style="border-radius: 100%; width:20vw; height:20vw; margin-top: -5vh;"></div>
+<body id="Link" class="overflow-y:sroll bg-gray-900 font-sans leading-normal tracking-normal text-white">
+    <div style="display: flex;" class="">
+        <div style="width: 40vw;" class="flex flex-col content-center">
+            <img style="width: 5vw; margin-top: -1vh;" class="" src="./images/fmsLogo.png" alt="">
+            <div style=" display: flex; justify-content: center; align-items: center;" class="flex flex-col content-center justify-center">
+                <div id="profilePicture" class="bg-gray-700" style="border-radius: 100%; width:20vw; height:20vw; margin-top: -5vh;"></div>
                 <input type="text" id="profilePictureUrl" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white mt-2" 
                     placeholder="Enter image URL" style="display: none;">
             </div>
             
-            <form action="" class="ml-5" id="editUserInfoForm">
-                <div class="mb-4">
+            <form action="" class="flex flex-col ml-5" id="editUserInfoForm">
+                <div class="mb-4 flex flex-col">
                     <label for="editUsername" class="block text-gray-300 font-bold mb-2">Username</label>
                     <input type="text" id="editUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
                         placeholder="Username" disabled>
@@ -63,11 +64,11 @@
 
         <div style="height: 100vh; width:2px; margin-top:-4.5vh;" class="ml-5 bg-gray-800"></div>
 
-        <div style="display: block; margin-top:1vh;">
-            <div class="ml-5" style="width: 60vw; margin-top:-3vh;">
-                <div style="display: flex; height:12vh; text-align:justify;">
+        <div class="flex flex-col content-center" style="margin-top:1vh; justify-content: space-evenly;">
+            <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
+                <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw; "><img src="./images/googleLogo.png" alt=""></div>
-                    <div id="googleLink" class="ml-4" style="width: 40vw; overflow-y: scroll;">
+                    <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
                     Press "link" to link your active FMS account with Google account.
                     By connecting your Google account, you acknowledge and agree that your 
                     Google ID will be publicly visible in the FMS API and that FMS will 
@@ -76,25 +77,48 @@
                     please disconnect your accounts.</div>
                     <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700" onclick="signInWithGoogle()">Link</button>
                 </div>
-                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+                <button id="linkToGoogle" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
             </div>
 
-            <div class="ml-5" style="width: 60vw; margin-top:2vh;">
-                <div style="display: flex; height:12vh; text-align:justify;">
+            <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
+                <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw; "><img src="./images/microsoftLogo.png" alt=""></div>
-                    <div class="ml-4" style="width: 40vw;">Press "link" to link your active FMS account with Microsoft account.
-                    By connecting your Microsoft account, you acknowledge and agree that your 
-                    Microsoft ID will be publicly visible in the FMS API and that FMS will 
-                    automatically receive information about the Microsoft content you view while
+                    <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
+                        Press "link" to link your active FMS account with Microsoft account.
+                        By connecting your Microsoft account, you acknowledge and agree that your 
+                        Microsoft ID will be publicly visible in the FMS API and that FMS will 
+                        automatically receive information about the Microsoft content you view while
+                        your accounts are connected. If you do not want this information shared,</div>
+                </div>
+                <button id="linkToMicrosoft" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
+            </div>
+            <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
+                <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
+                    <div style="width:5vw; "><img src="./images/microsoftLogo.png" alt=""></div>
+                    <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
+                        Press "link" to link your active FMS account with Github account.
+                        By connecting your Github account, you acknowledge and agree that your 
+                        Github ID will be publicly visible in the FMS API and that FMS will 
+                        automatically receive information about the Github content you view while
+                        your accounts are connected. If you do not want this information shared,</div>
+                </div>
+                <button id="linkToGithub" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
+            </div>
+
+            <div class="flex flex-col content-center" style="margin-top:1vh; justify-content: space-evenly;">
+            <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
+                <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
+                    <div style="width:5vw; "><img src="./images/googleLogo.png" alt=""></div>
+                    <div id="Link" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
+                    Press "link" to link your active FMS account with Google account.
+                    By connecting your Google account, you acknowledge and agree that your 
+                    Google ID will be publicly visible in the FMS API and that FMS will 
+                    automatically receive information about the Google content you view while
                     your accounts are connected. If you do not want this information shared,
                     please disconnect your accounts.</div>
-                    <button id="linkToMicrosoft" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>
                 </div>
-                <div style="margin-left: -1.1vw; width:60vw; height: 1px;" class="bg-gray-800"></div>
+                <button id="linkToGoogle" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
             </div>
-        </div>
-            
-        
     </div>
 
     <script src="../dist/userPage.js"></script>

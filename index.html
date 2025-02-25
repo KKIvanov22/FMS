@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FinTech</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="icon" type="image/png" href="html/images/fmsLogo.png">
+  <link rel="icon" type="image/png" href="./html/images/fmsLogo.png">
   <style>
     .hidden {
       display: none;
@@ -13,42 +13,42 @@
   </style>
   
 </head>
-<body class="bg-gray-900 flex items-center justify-center min-h-screen">
-  <div style="height:100vh; width:45vw" class="container absolute right-20 mx-auto p-8 rounded-lg">
-    <img src="./html/images/fmsLogo.png" style="margin-left:39vw;" class="w-20 flex mb-12 justify-end">
-    <h1 style="justify-content:center;" class="flex text-5xl mb-6 text-white" id="form-title">Log in to your account!</h1>
+<body class="bg-gray-900" style="overflow: hidden;">
+  <img src="./html/images/fmsLogo.png" class="w-20" style="margin-left: -1vw;"> 
+  <div style="height: 75vh; width:90vw" class="flex flex-col justify-center items-center container relative  mx-auto p-8 rounded-lg">
+    <h1 class="flex text-5xl text-white justify-center" id="form-title">Log into your accunt!</h1>
     <br>
     <br>
     <h5 style="justify-content:center;" class="flex text-s font-bold mb-6 text-gray-500" id="form-title">Log in with:</h5>
     <div class="flex justify-center">
-      <a href=""><img src="./html/images//facebookLogo.png" style="height:6vh; width:3vw;" class="rounded-full"></a>
-        <a href=""><img src="./html/images//appleLogo.png" style="height:6vh; width:5vw;" class="rounded-full"></a>
-        <a href=""><img src="./html/images//googleLogo.png" style="height:5vh; width:2.5vw;" class="rounded-full mt-1 ml-1"></a>
+        <a href=""><img src="./html/images/facebookLogo.png" style="height:6vh; width:3vw;" class="rounded-full"></a>
+        <a href=""><img src="./html/images/appleLogo.png" style="height:6vh; width:5vw;" class="rounded-full"></a>
+        <a href=""><img src="./html/images/googleLogo.png" style="height:5vh; width:2.5vw;" class="rounded-full mt-1"></a>
     </div>
-    <div class="flex items-center my-5">
-      <div class="flex-grow border-t border-gray-300"></div>
+      
+    <div class="flex items-center justify-center mt-5">
+      <div class="border-t border-gray-300" style="width: 25vw;"></div>
       <span class="px-3 text-gray-500">OR</span>
-      <div class="flex-grow border-t border-gray-300"></div>
+      <div class="border-t border-gray-300" style="width: 25vw;"></div>
     </div>
     <br>
-    <form id="login-form" class="space-y-4 transition-opacity duration-500 ease-in-out">
-      <input type="email" id="login-email" placeholder="Email" required class="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500">
-      <input type="password" id="login-password" placeholder="Password" required class="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500">
+    
+    <form id="register-form" class="flex flex-col items-center space-y-4 transition-opacity duration-500 ease-in-out" style="width: 50vw;">
+      <input type="text" id="register-username" placeholder="Username" required class="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500">
+      <input type="password" id="register-password" placeholder="Password" required class="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500">
       <button type="submit" class="w-full bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Log in</button>
     </form>
-    <div class="flex gap-1 items-center justify-end">
-      <a href="./html/register.html">
-        <button style="justify-content:center;" class="flex text-s font-bold mb-6 text-gray-700 underline hover:text-gray-300 transition duration-200">Sign up</button>
-      </a>
+  </div>
+  <div style="width: 74vw;" class="flex justify-end">
+    <div class="flex justify-end" style="width: 50vw; align-items: baseline;">
+        <a href="./html/register.html">
+            <button class="flex justify-center text-s font-bold text-gray-700 underline hover:text-gray-300 transition duration-200">Sign up</button>
+        </a>
     </div>
   </div>
 
-  <div id="logInPic" style="width:46vw" class="container absolute left-5">
-    <img src="./html/images/logInPic.png" class="rounded-lg object-cover">
-  </div>
-
-  <script src="./dist/renderer.js"></script>
-  <script src="./dist/translation.js"></script>
-  <script src="./src/styling.js"></script>
+  <script src="../dist/renderer.js"></script>
+  <script src="../dist/translation.js"></script>
+  <script src="../src/styling.js"></script>
 </body>
 </html>

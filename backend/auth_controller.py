@@ -1,5 +1,6 @@
 from flask import jsonify, request, make_response
 from firebase_admin import auth, db
+import logging
 
 def register_handler():
     data = request.get_json()
@@ -76,20 +77,36 @@ def get_user_handler():
         return jsonify({"error": str(e)}), 500
 
 def link_google_handler():
+    print("link_google_handler called")
     try:
         data = request.get_json()
+        print(f"Received data: {data}")
         id_token = data.get("idToken")
+        print(f"ID Token: {id_token}")
 
         decoded_token = auth.verify_id_token(id_token)
+        print(f"Decoded token: {decoded_token}")
         google_uid = decoded_token["uid"]
+        print(f"Google UID: {google_uid}")
 
         current_user = auth.get_user(google_uid)
+        print(f"Current user: {current_user}")
 
-        google_credential = auth.GoogleAuthProvider.credential(id_token)
+        google_client_id = firebase_admin.get_app().credential.service_account_info.get("google_client_id")
+        print(f"Google Client ID: {google_client_id}")
+
+        if not google_client_id:
+            print("Google Client ID is missing from the config")
+            return jsonify({"error": "Google Client ID is missing from the config"}), 400
+
+        google_credential = auth.OAuthProvider("google.com").credential(id_token)
+        print(f"Google credential: {google_credential}")
 
         auth.update_user(current_user.uid, provider_to_link=google_credential)
+        print("Google account linked successfully")
 
         return jsonify({"message": "Google account linked successfully!"}), 200
 
     except Exception as e:
+        print(f"Error linking Google account: {e}")
         return jsonify({"error": str(e)}), 400

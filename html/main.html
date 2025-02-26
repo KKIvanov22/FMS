@@ -23,12 +23,12 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 font-sans leading-normal tracking-normal text-white">
+<body class="bg-gray-900 realtive font-sans leading-normal tracking-normal text-white">
         <div class="header bg-gray-800 text-white p-4 flex justify-between items-center" style="display: flex; justify-content: space-between;">
             <div class="w-10 h-10" style="margin-top: -2vh;"><img src="./images/fmsLogo.png" alt=""></div>
             <div class="username font-bold text-lg" id="username"></div>
             <div class="company font-bold text-lg" id="company"></div>
-            <div style="width: 100vw;" class="flex justify-center text-4xl font-mono text-gray-200">FMS</div>
+            <div style="width: 90vw;" class="flex absolute justify-center text-4xl font-mono text-gray-200">FMS</div>
             <a href="./userPage.html">
                 <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-10 h-10 rounded-full">
             </a>
@@ -81,7 +81,7 @@
         </div>
     </div>
     
-    <div id="createTeamModal" class="hidden fixed flex items-center justify-center" style="width: 100vw; height: 90vh;">
+    <div id="createTeamModal" class="hidden fixed flex items-center justify-center" style="width: 90vw; height: 90vh;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="teamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div id="updateTeamModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+    <div id="updateTeamModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width:90vw;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="updateTeamName" class="block text-gray-300 font-bold mb-2">Team Name:</label>
@@ -120,7 +120,7 @@
         </div>
     </div>
     
-    <div id="assignTaskModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+    <div id="assignTaskModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width:90vw;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="taskName" class="block text-gray-300 font-bold mb-2">Task Name:</label>
@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <div id="updateUserRoleModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 100vw;">
+    <div id="updateUserRoleModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width: 90vw;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="updateUserRoleUsername" class="block text-gray-300 font-bold mb-2">Username:</label>

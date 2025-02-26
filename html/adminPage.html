@@ -11,6 +11,10 @@
         .hidden {
             display: none;
         }
+        .popup-container {
+            width: 80%;
+            max-width: 800px;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -22,7 +26,7 @@
     </div>
 
     <div id="update-support-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
-        <div class="bg-gray-700 p-8 rounded-lg shadow-lg">
+        <div class="bg-gray-700 p-8 rounded-lg shadow-lg popup-container">
             <h2 class="text-2xl font-bold mb-4">Update Support Request</h2>
             <p id="support-description" class="mb-4"></p>
             <label class="flex items-center mb-4">
@@ -33,6 +37,47 @@
                 <button id="cancel-support-update" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Cancel</button>
                 <button id="confirm-support-update" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Update</button>
             </div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto p-8">
+        <button id="show-users-button" class="bg-blue-600 text-white p-3 rounded hover:bg-blue-500 transition duration-200 mb-4">Show Users</button>
+        <div id="company-list-container" class="space-y-4"></div>
+        <div id="support-list-container" class="space-y-4"></div>
+    </div>
+
+    <div id="user-list-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-gray-700 p-8 rounded-lg shadow-lg popup-container">
+            <h2 class="text-2xl font-bold mb-4">Users</h2>
+            <div id="user-list-container" class="space-y-4"></div>
+            <div class="flex justify-end space-x-4">
+                <button id="close-user-list" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-user-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+        <div class="bg-gray-700 p-8 rounded-lg shadow-lg popup-container">
+            <h2 class="text-2xl font-bold mb-4">Edit User</h2>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <div class="mb-4">
+                    <label for="edit-username" class="block text-sm font-medium text-gray-300">Username</label>
+                    <input type="text" id="edit-username" class="mt-1 block w-full bg-gray-800 text-white border-gray-600 rounded-md shadow-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-email" class="block text-sm font-medium text-gray-300">Email</label>
+                    <input type="email" id="edit-email" class="mt-1 block w-full bg-gray-800 text-white border-gray-600 rounded-md shadow-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-role" class="block text-sm font-medium text-gray-300">Role</label>
+                    <input type="text" id="edit-role" class="mt-1 block w-full bg-gray-800 text-white border-gray-600 rounded-md shadow-sm">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" id="cancel-edit-user" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-500 transition duration-200">Cancel</button>
+                    <button type="submit" class="bg-blue-600 text-white p-3 rounded hover:bg-blue-500 transition duration-200">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 

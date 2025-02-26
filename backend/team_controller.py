@@ -103,13 +103,19 @@ def add_team_material_handler():
 
     try:
         ref = db.reference(f'Companies/{target_company}/Teams/{target_team}/Materials')
-        ref.set(materials)
+        for material in materials:
+            material_id = material.get('id')
+            quantity = material.get('quantity')
+            if not material_id or not quantity:
+                print("Material id or quantity missing.")
+                return jsonify({"error": "Material id or quantity missing"}), 400
+            ref.child(material_id).set({"quantity": quantity})
         print(f"Materials added successfully to team {target_team} in company {target_company}.")
         return jsonify({"message": "Materials added successfully"}), 200
     except Exception as e:
         logging.error(f"Error adding materials: {e}")
-        return jsonify({"error": str(e)}), 500  
-
+        return jsonify({"error": str(e)}), 500
+        
 def get_team_material_handler():
     print("Get team material endpoint called.")
     company = request.args.get('company')
@@ -128,15 +134,15 @@ def get_team_material_handler():
         materials = ref.get()
 
         if materials:
+            material_list = [{"id": key, "quantity": value["quantity"]} for key, value in materials.items()]
             print(f"Materials for team {team} in company {company} fetched successfully.")
-            return jsonify(materials), 200
+            return jsonify(material_list), 200
         else:
             print(f"No materials found for team {team} in company {company}.")
             return jsonify({"error": "No materials found"}), 404
     except Exception as e:
         logging.error(f"Error fetching materials: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 def update_team_material_handler():
     print("Update team material endpoint called.")

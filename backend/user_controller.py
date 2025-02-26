@@ -2,6 +2,16 @@ from flask import jsonify, request
 from firebase_admin import db, auth
 import logging
 
+def get_all_users_handler():
+    try:
+        ref = db.reference('Accounts')
+        users = ref.get()
+        user_list = [{"uid": uid, "Username": user_data.get("Username")} for uid, user_data in users.items()]
+        return jsonify(user_list), 200
+    except Exception as e:
+        logging.error(f"Error fetching users: {e}")
+        return jsonify({"error": str(e)}), 500
+
 def update_user_handler():
     print("Update user endpoint called.")
     user_id = request.cookies.get('user_id')

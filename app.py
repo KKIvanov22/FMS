@@ -10,7 +10,7 @@ from datetime import datetime
 from backend.auth_controller import register_handler, login_handler, get_user_handler, link_google_handler
 from backend.company_controller import update_company_handler, get_companies_handler, add_company_material_handler, get_company_material_handler, update_company_material_handler, update_company_name_handler
 from backend.team_controller import add_team_handler, get_teams_handler, update_team_handler, add_team_material_handler, get_team_material_handler, update_team_material_handler
-from backend.user_controller import update_user_handler, update_user_role_handler, get_users_handler, get_employee_tasks_handler
+from backend.user_controller import update_user_handler, update_user_role_handler, get_users_handler, get_employee_tasks_handler, get_all_users_handler
 from backend.tasks_controller import add_team_tasks_handler, get_team_tasks_handler
 from backend.support_controller import add_support_handler, get_support_handler, update_support_handler
 from backend.chat_controller import create_chat_handler, send_message_handler, get_chats_handler, get_messages_handler
@@ -111,7 +111,9 @@ def get_users():
 @app.route('/get_employee_tasks', methods=['GET'])
 def get_employee_tasks():
     return get_employee_tasks_handler()
-
+@app.route('/get_all_users', methods=['GET'])
+def get_all_users():
+    return get_all_users_handler()
 # ----------------------------------------------------------------
 # Tasks routes
 @app.route('/add_team_tasks', methods=['POST'])

@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
       loginForm.classList.remove('opacity-100');
     });
   
-    // Existing event listeners for form submissions
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       alert('Login form submitted');

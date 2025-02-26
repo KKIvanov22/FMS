@@ -79,7 +79,85 @@ async function updateCompanyName() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', fetchCompanies);
+document.addEventListener('DOMContentLoaded', () => {
+    fetchCompanies();
+    const showUsersButton = document.getElementById('show-users-button');
+    const userListPopup = document.getElementById('user-list-popup');
+    const userListContainer = document.getElementById('user-list-container');
+    const closeUserListButton = document.getElementById('close-user-list');
+    const editUserPopup = document.getElementById('edit-user-popup');
+    const editUserForm = document.getElementById('edit-user-form') as HTMLFormElement;
+    const editUserId = document.getElementById('edit-user-id') as HTMLInputElement;
+    const editUsername = document.getElementById('edit-username') as HTMLInputElement;
+    const editEmail = document.getElementById('edit-email') as HTMLInputElement;
+    const editRole = document.getElementById('edit-role') as HTMLInputElement;
+    const cancelEditUserButton = document.getElementById('cancel-edit-user');
+
+    showUsersButton?.addEventListener('click', async () => {
+        try {
+            const response = await fetch('http://localhost:5000/get_all_users');
+            const users = await response.json();
+            if (userListContainer) {
+                userListContainer.innerHTML = '';
+                users.forEach((user: { uid: string, Username: string }) => {
+                    const userItem = document.createElement('div');
+                    userItem.className = 'p-4 bg-gray-800 rounded cursor-pointer hover:bg-gray-700';
+                    userItem.textContent = user.Username;
+                    userItem.addEventListener('click', () => openEditUserPopup(user));
+                    userListContainer.appendChild(userItem);
+                });
+            }
+            userListPopup?.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    });
+
+    closeUserListButton?.addEventListener('click', () => {
+        userListPopup?.classList.add('hidden');
+    });
+
+    cancelEditUserButton?.addEventListener('click', () => {
+        editUserPopup?.classList.add('hidden');
+    });
+
+    editUserForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const userId = editUserId.value;
+        const username = editUsername.value;
+        const email = editEmail.value;
+        const role = editRole.value;
+
+        try {
+            const response = await fetch(`http://localhost:5000/update_user/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, email, role })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert('User updated successfully');
+                editUserPopup?.classList.add('hidden');
+                userListPopup?.classList.add('hidden');
+            } else {
+                alert(`Failed to update user: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    });
+
+    function openEditUserPopup(user: { uid: string, Username: string }) {
+        editUserId.value = user.uid;
+        editUsername.value = user.Username;
+        editEmail.value = ''; // Fetch and set email if needed
+        editRole.value = ''; // Fetch and set role if needed
+        editUserPopup?.classList.remove('hidden');
+    }
+});
+
 cancelUpdateButton?.addEventListener('click', closeUpdatePopup);
 confirmUpdateButton?.addEventListener('click', updateCompanyName);
 

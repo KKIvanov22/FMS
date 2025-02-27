@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const closeModalButton = document.getElementById('closeModal');
                 
                 if (usernameElement && companyElement) {
-                    usernameElement.textContent = userData.Email;
+                    usernameElement.textContent = userData.Username;
                     companyElement.textContent = userData.Company;
                 }
 

@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                             if (updateResponse.ok) {
                                 alert('Company updated successfully');
+                                updateCompanyModal!.style.display = 'none';
+                                companyElement!.textContent = updateCompany;
+
                             }
                         } catch (error) {
                             console.error('Error updating company:', error);

@@ -2,10 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentChatId: string | null = null;
     let fetchMessagesInterval: ReturnType<typeof setInterval> | null = null;
     let usersMap: Map<string, string> | null = null;
+    fetchChats();
 
     document.getElementById('createChatButton')?.addEventListener('click', () => {
         document.getElementById('chatModal')?.classList.remove('hidden');
-        fetchChats();
     });
 
     document.getElementById('closeChatModal')?.addEventListener('click', () => {

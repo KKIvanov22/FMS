@@ -21,8 +21,23 @@ def update_company_handler():
         user = ref.get()
 
         if user:
+            old_company = user.get("Company")
             ref.update({"Company": new_company})
             print(f"Company for user {user_id} updated successfully to {new_company}.")
+
+            company_ref = db.reference(f'Companies/{old_company}')
+            company_data = company_ref.get()
+            if company_data:
+                db.reference(f'Companies/{new_company}').set(company_data)
+                company_ref.delete()
+                print(f"Company {old_company} updated to {new_company} in Companies collection.")
+
+            users_ref = db.reference('Accounts')
+            users = users_ref.order_by_child('Company').equal_to(old_company).get()
+            for uid, user_data in users.items():
+                users_ref.child(uid).update({"Company": new_company})
+                print(f"Updated company for user {uid} to {new_company}.")
+
             return jsonify({
                 "message": "Company updated successfully",
                 "username": user.get("Username")
@@ -110,27 +125,34 @@ def update_company_material_handler():
 
 def update_company_name_handler():
     data = request.get_json()
-    old_name = data.get('oldName')
-    new_name = data.get('newName')
+    username = data.get('username')
+    user_id = request.cookies.get('user_id')
 
-    if not old_name or not new_name:
-        return jsonify({"error": "Old name and new name are required"}), 400
+    if not username or not user_id:
+        return jsonify({"error": "Username and user ID are required"}), 400
 
     try:
-        ref = db.reference('Companies')
-        companies = ref.get()
+        # Get the company of the user from the cookies
+        user_ref = db.reference(f'Accounts/{user_id}')
+        user = user_ref.get()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
 
-        if old_name not in companies:
-            return jsonify({"error": "Company not found"}), 404
+        new_company = user.get('Company')
+        if not new_company:
+            return jsonify({"error": "User's company not found"}), 404
 
-        if new_name in companies:
-            return jsonify({"error": "New company name already exists"}), 409
+        # Update the specified user's company
+        users_ref = db.reference('Accounts')
+        users = users_ref.order_by_child('Username').equal_to(username).get()
+        if not users:
+            return jsonify({"error": "User not found"}), 404
 
-        company_data = companies.pop(old_name)
-        ref.child(old_name).delete()
-        ref.child(new_name).set(company_data)
+        for uid, user_data in users.items():
+            users_ref.child(uid).update({"Company": new_company})
+            print(f"Updated company for user {uid} to {new_company}.")
 
-        return jsonify({"message": "Company name updated successfully"}), 200
+        return jsonify({"message": "User's company updated successfully"}), 200
     except Exception as e:
-        logging.error(f"Error updating company name: {e}")
+        logging.error(f"Error updating user's company: {e}")
         return jsonify({"error": str(e)}), 500

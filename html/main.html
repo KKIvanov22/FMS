@@ -20,6 +20,12 @@
         footer {
             margin-top: auto;
         }
+
+        .support-link {
+            margin-left: 2vw;
+            margin-top: 2vh;
+            text-align: center;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -27,10 +33,9 @@
     <div class="flex">
         <div style="width: 20vw; height: 100vh; background-color:#052F4A;">
             <div style="width: 20vw; height: 15vh; display: flex; justify-content: space-between; align-items: center; padding: 1vw; text-align: justify;">  
-                    <a href="./userPage.html">
-                    <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-16 h-16 rounded-full ">
+                <a href="./userPage.html">
+                    <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-16 h-16 rounded-full">
                 </a>
-                
                 <div class="username font-bold text-2xl" style="width: 10vw; height: 5vh; text-align: justify; margin-left: 2vw;" id="username"></div>
             </div>
             <div style="display: flex; justify-content: center;">
@@ -54,7 +59,11 @@
                 </div>
             </div>
         </div>
-        <div style="margin-left: 2vw; margin-top: 2vh;" class="text-4xl company font-bold text-lg" id="company"></div>
+        <div class="w-3/5 "> 
+            <div style="margin-left: 2vw; margin-top: 2vh;" class="font-bold text-4xl" id="company"></div>
+            <button class=" ml-auto support-link mr-2 bg-gray-800 text-gray-400 flex items-center justify-center " style="height: 6vh; width: 8vw; border-radius: 2vh; margin-top: -5vh;"
+             id="supportLink" class="hover:text-gray-300 text-lg">Support</button>
+        </div>
     </div>
 
     <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
@@ -72,7 +81,7 @@
                 <button id="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
         </div>
-    </div>
+    </div> 
 
     <div id="createTeamModal" class="hidden fixed flex items-center justify-center" style="width: 90vw; height: 90vh;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
@@ -163,14 +172,8 @@
             </div>
         </div>
     </div>
-
-    <!-- -->
-
-    <!-- <footer class="bg-gray-800 text-gray-400 p-4 text-center">
-        <a href="#" id="supportLink" class="hover:text-gray-300">Support</a>
-    </footer> -->
     
-    <!-- <div id="supportModal" class="hidden flex items-center justify-center" style="height: 90vh;">
+    <div id="supportModal" class="hidden flex items-center justify-center" style="height: 90vh;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
                 <label for="supportName" class="block text-gray-300 font-bold mb-2">Your name:</label>
@@ -185,7 +188,7 @@
                 <button id="closeSupportModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
         </div>
-    </div>-->
+    </div>
 
     <div id="individualChatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
@@ -222,31 +225,27 @@
                 <ul id="chatList" class="list-disc list-inside text-gray-300"></ul>
             </div>
         </div>
-        </div>
     </div>
-
 
     <div id="chatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-                <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
-                    <div class="mb-4">
-                        <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Select participants:</label>
-                        <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
-                        <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
-                    </div>
-                    <div class="mb-4">
-                        <label for="selectedParticipants" class="block text-gray-300 font-bold mb-2">Selected Participants:</label>
-                        <ul id="selectedParticipants" class="bg-gray-800 text-white mt-2 rounded"></ul>
-                    </div>
-                    <div class="flex justify-end">
-                        <button id="submitChat" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Create Chat</button>
-                        <button id="closeChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
-                    </div>
-                </div>
-            </div>            
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
+            <div class="mb-4">
+                <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Select participants:</label>
+                <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
+            </div>
+            <div class="mb-4">
+                <label for="selectedParticipants" class="block text-gray-300 font-bold mb-2">Selected Participants:</label>
+                <ul id="selectedParticipants" class="bg-gray-800 text-white mt-2 rounded"></ul>
+            </div>
+            <div class="flex justify-end">
+                <button id="submitChat" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Create Chat</button>
+                <button id="closeChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
         </div>
     </div>
-    <div style="margin-left: 2vw; margin-top: 2vh;" class="text-4xl company font-bold text-lg" id="company"></div>
-</div>
+    
+
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>
     <script src="../dist/updateUserRole.js"></script>

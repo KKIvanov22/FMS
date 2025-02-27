@@ -23,64 +23,41 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 realtive font-sans leading-normal tracking-normal text-white">
+<body class="bg-gray-900 font-sans leading-normal tracking-normal text-white" style="overflow-y: hidden;">
     <div class="flex">
-    <div style="width: 20vw; height: 100vh; background-color:#052F4A;">
-        <div style="width: 20vw; height: 15vh; display: flex; justify-content: space-between; align-items: center; padding: 1vw; text-align: justify;">
-            <a href="./userPage.html">
-                <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-16 h-16 rounded-full">
-            </a>
-                <div class="username font-bold text-2xl" style="width: 12vw; height: 5vh; text-align: justify; margin-left: 2vw;" id="username"></div>
-        </div>
-        <div style="display: flex; justify-content: center;">
-            <div style="width: 18vw;" class="border-b-2 border-white-100"></div>
-        </div>
-        <div style="width: 20vw; height: 75vh; align-items: center;" class="flex flex-col">
-            <div class="container mx-auto flex flex-col gap-6" style="width: 20vw; justify-content: center; align-items: center;">
-                <button id="updateCompanyButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Companys</button>
-                <button id="createTeamButton" style="width: 15vw;" class=" bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Teams</button>
-                <button id="updateUserRoleButton" style="width: 15vw;" class=" bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Role</button>
-                <button id="addMaterialsButton" style="width: 15vw;" class=" bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Manage Materials</button>
-                <button id="createChatButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
+        <div style="width: 20vw; height: 100vh; background-color:#052F4A;">
+            <div style="width: 20vw; height: 15vh; display: flex; justify-content: space-between; align-items: center; padding: 1vw; text-align: justify;">  
+                    <a href="./userPage.html">
+                    <img id="profilePicture" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile Picture" class="w-16 h-16 rounded-full ">
+                </a>
+                
+                <div class="username font-bold text-2xl" style="width: 10vw; height: 5vh; text-align: justify; margin-left: 2vw;" id="username"></div>
             </div>
-            
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; justify-content: center;">
                 <div style="width: 18vw;" class="border-b-2 border-white-100"></div>
             </div>
-            
-
-            <div id="chatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-                <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
-                    <div class="mb-4">
-                        <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Select participants:</label>
-                        <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
-                        <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
-                    </div>
-                    <div class="mb-4">
-                        <label for="selectedParticipants" class="block text-gray-300 font-bold mb-2">Selected Participants:</label>
-                        <ul id="selectedParticipants" class="bg-gray-800 text-white mt-2 rounded"></ul>
-                    </div>
-                    <div class="flex justify-end">
-                        <button id="submitChat" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Create Chat</button>
-                        <button id="closeChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
-                    </div>
-                    <div class="mt-4">
-                        <h2 class="text-gray-300 font-bold mb-2">Your Chats:</h2>
-                        <ul id="chatList" class="list-disc list-inside text-gray-300"></ul>
-                    </div>
+            <div style="width: 20vw; height: 75vh; align-items: center;" class="flex flex-col">
+                <div class="container mx-auto flex flex-col gap-8" style="width: 20vw; justify-content: center; align-items: center;">
+                    <button id="updateCompanyButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Companys</button>
+                    <button id="createTeamButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create Teams</button>
+                    <button id="updateUserRoleButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Role</button>
+                    <button id="addMaterialsButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Manage Materials</button>
                 </div>
-            </div> 
-                <div style="width: 18vw; height:10vh; display: flex; justify-content: start; align-items:center; margin-bottom: -8vh;" class=" gap-2">
-                    <a class="flex gap-2" href="../index.html"><img style="height: 5vh;" src="./images/logOut.png" alt="">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 18vw;" class="border-b-2 border-white-100"></div>
+                </div>
+                <div style="width: 18vw; height:10vh; display: flex; justify-content: start; align-items:center; margin-bottom: -8vh;" class="gap-2">
+                    <a class="flex gap-2" href="../index.html">
+                        <img style="height: 5vh;" src="./images/logOut.png" alt="">
                         <button class="font-bold text-lg">Sign out</button>
-                    </a>    
-                </div>           
+                    </a>
+                </div>
+            </div>
         </div>
+        <div style="margin-left: 2vw; margin-top: 2vh;" class="text-4xl company font-bold text-lg" id="company"></div>
     </div>
-    <div style="margin-left: 2vw; margin-top: 2vh;" class="text-4xl company font-bold text-lg" id="company"></div>
-</div>
 
-   <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+    <div id="updateCompanyModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
             <div class="mb-4">
                 <label for="updateUsername" class="block text-gray-300 font-bold mb-2">Username:</label>
@@ -96,7 +73,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="createTeamModal" class="hidden fixed flex items-center justify-center" style="width: 90vw; height: 90vh;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
@@ -135,7 +112,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="assignTaskModal" class="hidden fixed flex items-center justify-center" style="height: 90vh; width:90vw;">
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="width: 40vw;">
             <div class="mb-4">
@@ -167,7 +144,7 @@
                     <option value="admin">Admin</option>
                 </select>
             </div>
-             <div class="flex justify-end">
+            <div class="flex justify-end">
                 <button id="submitUpdateUserRole" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
                 <button id="closeUpdateUserRoleModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
@@ -195,27 +172,68 @@
                 <button id="closeSupportModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div id="individualChatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
             <div class="mb-4">
                 <div class="justify-center">
-                <h1 id="chatTitle" class="text-gray-300 font-bold text-2xl">Chat</h1>
-            </div>
+                    <h1 id="chatTitle" class="text-gray-300 font-bold text-2xl">Chat</h1>
                 </div>
-                <ul id="chatMessages" class="bg-gray-800 text-white mt-2 rounded p-2 h-64 overflow-y-scroll" style="height:50vh; width:48vw;"></ul>
-                <div class="flex gap-2">
-                    <textarea id="newMessage" class="border border-gray-600 w-full p-2 rounded bg-gray-800 text-white" style="height: 5vh;" placeholder="Message here..."></textarea>
-                    <div class="flex justify-end">
+            </div>
+            <ul id="chatMessages" class="bg-gray-800 text-white mt-2 rounded p-2 h-64 overflow-y-scroll" style="height:50vh; width:48vw;"></ul>
+            <div class="flex gap-2">
+                <textarea id="newMessage" class="border border-gray-600 w-full p-2 rounded bg-gray-800 text-white" style="height: 5vh;" placeholder="Message here..."></textarea>
+                <div class="flex justify-end">
                     <button id="sendMessageButton" class="flex bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2" style="height: 5vh; align-items: center;">Send</button>
                     <button id="closeIndividualChatModal" class="flex bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400" style="height:5vh; align-items: center;">Close</button>
-            </div>
-            </div>
+                </div>
             </div>
         </div>
-    </div>  -->
+    </div>
 
+    <div id="viewChats" class="absolute inset-y-0 right-0 flex flex-col items-center justify-end" style="width: 20vw; height: 100vh;">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg" style="height: 100vh; background-color:#052F4A; width: 20vw;">
+            <div style="display: flex; justify-content: space-between;">
+                <img style="width: 3vw;" src="../html/images/fmsLogoCropped.png" alt="">
+                <button id="createChatButton" style="width: 8vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">New Chat</button>
+            </div>
+            
+            <div class="flex mt-2" style="justify-content: center;">
+                <div style="width: 18vw;" class="border-b-2 border-white-100"></div>
+
+            </div>
+
+            <div class="mt-4">
+                <h2 class="text-gray-300 font-bold mb-2">Your Chats:</h2>
+                <ul id="chatList" class="list-disc list-inside text-gray-300"></ul>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <div id="chatModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+                <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-1/2">
+                    <div class="mb-4">
+                        <label for="chatParticipants" class="block text-gray-300 font-bold mb-2">Select participants:</label>
+                        <input type="text" id="chatParticipants" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+                        <ul id="participantSuggestions" class="bg-gray-800 text-white mt-2 rounded"></ul>
+                    </div>
+                    <div class="mb-4">
+                        <label for="selectedParticipants" class="block text-gray-300 font-bold mb-2">Selected Participants:</label>
+                        <ul id="selectedParticipants" class="bg-gray-800 text-white mt-2 rounded"></ul>
+                    </div>
+                    <div class="flex justify-end">
+                        <button id="submitChat" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Create Chat</button>
+                        <button id="closeChatModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div style="margin-left: 2vw; margin-top: 2vh;" class="text-4xl company font-bold text-lg" id="company"></div>
+</div>
     <script src="../dist/company.js"></script>
     <script src="../dist/teams.js"></script>
     <script src="../dist/updateUserRole.js"></script>

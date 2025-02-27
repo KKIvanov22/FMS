@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="icon" type="image/png" href="./images/fmsLogo.png">
 </head>
-<body id="Link" class="overflow-y:sroll bg-gray-900 font-sans leading-normal tracking-normal text-white">
+<body id="Link" style="overflow-y: hidden;" class=" bg-gray-900 font-sans leading-normal tracking-normal text-white">
     <div style="display: flex;" class="">
         <div style="width: 40vw;" class="flex flex-col content-center">
-            <img style="width: 3vw;" class="" src="./images/fmsLogo.png" alt="">
+            <img id="backToHomeLogo" style="width: 3vw; cursor: pointer;" class="ml-2 mt-2" src="./images/fmsLogo.png" alt="">
             <div style=" display: flex; justify-content: center; align-items: center;" class="flex flex-col content-center justify-center">
                 <div id="profilePicture" class="bg-gray-700" style="border-radius: 100%; width:20vw; height:20vw; margin-top: -5vh;"></div>
                 <input type="text" id="profilePictureUrl" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white mt-2" 
@@ -104,5 +104,10 @@
     </div>
 
     <script src="../dist/userPage.js"></script>
+    <script>
+        document.getElementById('backToHomeLogo').addEventListener('click', function() {
+            window.location.href = './main.html';
+        });
+    </script>
 </body>
 </html>

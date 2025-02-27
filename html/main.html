@@ -42,6 +42,7 @@
                 <button id="updateUserRoleButton" style="width: 15vw;" class=" bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Update Role</button>
                 <button id="addMaterialsButton" style="width: 15vw;" class=" bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Manage Materials</button>
                 <button id="createChatButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Create/View Chats</button>
+                <button id="recruitButton" style="width: 15vw;" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">Recruit</button>
             </div>
             
             <div style="display: flex; align-items: center;">
@@ -170,6 +171,19 @@
              <div class="flex justify-end">
                 <button id="submitUpdateUserRole" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
                 <button id="closeUpdateUserRoleModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="recruitModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <label for="recruitUsername" class="block text-gray-300 font-bold mb-2">Username to Recruit:</label>
+                <input type="text" id="recruitUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            </div>
+            <div class="flex justify-end">
+                <button id="submitRecruit" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500 mr-2">Submit</button>
+                <button id="closeRecruitModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-400">Close</button>
             </div>
         </div>
     </div>

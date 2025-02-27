@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const updateCompanyModal = document.getElementById('updateCompanyModal');
                 const submitUpdateButton = document.getElementById('submitUpdate');
                 const closeModalButton = document.getElementById('closeModal');
+                const recruitButton = document.getElementById('recruitButton');
+                const recruitModal = document.getElementById('recruitModal');
+                const submitRecruitButton = document.getElementById('submitRecruit');
+                const closeRecruitModalButton = document.getElementById('closeRecruitModal');
                 
                 if (usernameElement && companyElement) {
                     usernameElement.textContent = userData.Username;
@@ -55,6 +59,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                             }
                         } catch (error) {
                             console.error('Error updating company:', error);
+                        }
+                    }
+                });
+
+                recruitButton?.addEventListener('click', () => {
+                    recruitModal!.style.display = 'block';
+                });
+
+                closeRecruitModalButton?.addEventListener('click', () => {
+                    recruitModal!.style.display = 'none';
+                });
+
+                submitRecruitButton?.addEventListener('click', async () => {
+                    const recruitUsername = (document.getElementById('recruitUsername') as HTMLInputElement).value;
+                    if (recruitUsername) {
+                        try {
+                            const recruitResponse = await fetch('http://localhost:5000/update_company_name', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({oldName: userData.Company, newName: userData.Company, username: recruitUsername}),
+                                credentials: 'include'
+                            });
+
+                            if (recruitResponse.ok) {
+                                alert('User recruited successfully');
+                                recruitModal!.style.display = 'none';
+                            }
+                        } catch (error) {
+                            console.error('Error recruiting user:', error);
                         }
                     }
                 });

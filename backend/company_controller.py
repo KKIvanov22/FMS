@@ -21,8 +21,23 @@ def update_company_handler():
         user = ref.get()
 
         if user:
+            old_company = user.get("Company")
             ref.update({"Company": new_company})
             print(f"Company for user {user_id} updated successfully to {new_company}.")
+
+            company_ref = db.reference(f'Companies/{old_company}')
+            company_data = company_ref.get()
+            if company_data:
+                db.reference(f'Companies/{new_company}').set(company_data)
+                company_ref.delete()
+                print(f"Company {old_company} updated to {new_company} in Companies collection.")
+
+            users_ref = db.reference('Accounts')
+            users = users_ref.order_by_child('Company').equal_to(old_company).get()
+            for uid, user_data in users.items():
+                users_ref.child(uid).update({"Company": new_company})
+                print(f"Updated company for user {uid} to {new_company}.")
+
             return jsonify({
                 "message": "Company updated successfully",
                 "username": user.get("Username")

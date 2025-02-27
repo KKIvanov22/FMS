@@ -1,33 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-const auth = getAuth();
-const googleProvider = new GoogleAuthProvider();
-
-async function signInWithGoogle() {
-    alert("signInWithGoogle function called");
-    try {
-        const result = await signInWithPopup(auth, googleProvider);
-        alert("signInWithPopup result: " + JSON.stringify(result));
-        const idToken = await result.user.getIdToken();
-        alert("ID Token: " + idToken);
-
-        const response = await fetch("http://localhost:5000/link-google", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idToken }),
-        });
-
-        const data = await response.json();
-        alert("Backend response: " + JSON.stringify(data));
-        if (response.ok) {
-            alert("Google linked successfully: " + JSON.stringify(data));
-        } else {
-            alert("Error linking Google account: " + data.error);
-        }
-    } catch (error) {
-        alert("Google Sign-In Error: " + error);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     alert("DOMContentLoaded event fired");
@@ -113,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => alert('Error updating user information: ' + error));
     });
 
-    linkToGoogleButton.addEventListener('click', signInWithGoogle);
+    //linkToGoogleButton.addEventListener('click', signInWithGoogle);
 });
 
 document.addEventListener('keydown', (event) => {

@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from firebase_admin import db
+import logging
 
 def add_team_handler():
     print("Add team endpoint called.")

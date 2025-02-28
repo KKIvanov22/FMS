@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const username = (document.getElementById('register-username') as HTMLInputElement).value;
       const password = (document.getElementById('register-password') as HTMLInputElement).value;
       const email = (document.getElementById('register-email') as HTMLInputElement).value;
+      const company = (document.getElementById('register-company') as HTMLInputElement).value;
+
+      const roleInCompany = company ? 'admin' : 'employee';
 
       try {
         const response = await fetch('http://localhost:5000/register', { 
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ username, password, email })
+          body: JSON.stringify({ username, password, email, company, roleInCompany })
         });
 
         const result = await response.json();

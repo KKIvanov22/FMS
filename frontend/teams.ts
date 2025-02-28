@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const teamTasksList = document.getElementById('teamTasksList');
                 const taskNameInput = document.getElementById('taskName') as HTMLInputElement;
                 const taskDescriptionInput = document.getElementById('taskDescription') as HTMLTextAreaElement;
+                const taskLevelInput = document.getElementById('taskLevel') as HTMLInputElement;
                 let currentTeamName = '';
 
                 const usersResponse = await fetch('http://localhost:5000/get_users', {
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 interface TaskData {
                     Description: string;
+                    Level: number;
                 }
                 
                 function populateTasksList(container: HTMLElement, tasks: Record<string, TaskData>) {
@@ -65,6 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         taskItem.innerHTML = `
                             <div class="font-bold">${taskName}</div>
                             <div>${taskData.Description}</div>
+                            <div>Level: ${taskData.Level}</div>
                         `;
                         container.appendChild(taskItem);
                     }
@@ -314,15 +317,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 submitTaskButton?.addEventListener('click', async () => {
                     const taskName = taskNameInput.value;
                     const taskDescription = taskDescriptionInput.value;
+                    const taskLevel = taskLevelInput.value;
                     const company = userData.Company;
-                    if (taskName && taskDescription) {
+                    if (taskName && taskDescription && taskLevel) {
                         try {
                             const taskResponse = await fetch('http://localhost:5000/add_team_tasks', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({ company: company, teamName: currentTeamName, taskName: taskName, description: taskDescription }),
+                                body: JSON.stringify({ company: company, teamName: currentTeamName, taskName: taskName, description: taskDescription, level: taskLevel }),
                                 credentials: 'include'
                             });
 
@@ -343,7 +347,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             console.error('Error:', error);
                         }
                     } else {
-                        alert('Please fill in both fields');
+                        alert('Please fill in all fields');
                     }
                 });
             } else {

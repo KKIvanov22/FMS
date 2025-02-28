@@ -172,3 +172,57 @@ def update_team_material_handler():
     except Exception as e:
         logging.error(f"Error updating materials: {e}")
         return jsonify({"error": str(e)}), 500
+
+def add_team_tasks_handler():
+    print("Add team tasks endpoint called.")
+    data = request.get_json()
+    company = data.get("company")
+    team_name = data.get("teamName")
+    task_name = data.get("taskName")
+    description = data.get("description")
+    level = data.get("level")
+
+    if not company or not team_name or not task_name or not description or not level:
+        print("Missing company, team name, task name, description, or level.")
+        return jsonify({"error": "Missing company, team name, task name, description, or level"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team_name}/Tasks')
+        ref.child(task_name).set({
+            "Description": description,
+            "Level": level
+        })
+
+        print(f"Task {task_name} added successfully to team {team_name} in company {company}.")
+        return jsonify({"message": "Task added successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error adding task: {e}")
+        return jsonify({"error": str(e)}), 500
+
+def get_team_tasks_handler():
+    print("Get team tasks endpoint called.")
+    company = request.args.get('company')
+    team = request.args.get('team')
+
+    if not company:
+        print("Company not provided.")
+        return jsonify({"error": "Company not provided"}), 400
+
+    if not team:
+        print("Team not provided.")
+        return jsonify({"error": "Team not provided"}), 400
+
+    try:
+        ref = db.reference(f'Companies/{company}/Teams/{team}/Tasks')
+        tasks = ref.get()
+
+        if tasks:
+            task_list = [{"name": key, "description": value["Description"], "level": value["Level"]} for key, value in tasks.items()]
+            print(f"Tasks for team {team} in company {company} fetched successfully.")
+            return jsonify(task_list), 200
+        else:
+            print(f"No tasks found for team {team} in company {company}.")
+            return jsonify({"error": "No tasks found"}), 404
+    except Exception as e:
+        logging.error(f"Error fetching tasks: {e}")
+        return jsonify({"error": str(e)}), 500

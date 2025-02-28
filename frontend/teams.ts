@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
     async function fetchDataAndUpdateUI() {
         try {
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 function populateUserCheckboxes(container: HTMLElement, selectedUsers: string[] = []) {
                     container.innerHTML = '';
-                    users.forEach((user: any) => {
+                    users.filter((user: any) => user.Company === userData.Company).forEach((user: any) => {
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
                         checkbox.id = `user-${user.uid}`;
@@ -362,3 +363,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setInterval(fetchDataAndUpdateUI, 3600000);
 });
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "F5") {
+        event.preventDefault(); // Prevents default refresh behavior
+        require("electron").ipcRenderer.send("reload-window");
+    }
+});
+

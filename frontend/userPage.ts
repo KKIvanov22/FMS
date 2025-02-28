@@ -131,3 +131,10 @@ document.addEventListener('keydown', (event) => {
         window.location.href = './main.html';
     }
 });
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "F5") {
+        event.preventDefault(); // Prevents default refresh behavior
+        require("electron").ipcRenderer.send("reload-window");
+    }
+});

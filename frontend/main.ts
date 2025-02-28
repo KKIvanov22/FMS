@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu,ipcMain } from 'electron';
 import * as path from 'path';
 
 function createWindow() {
@@ -30,4 +30,8 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+ipcMain.on("reload-window", (event) => {
+  let win = BrowserWindow.getFocusedWindow();
+  if (win) win.reload();
 });

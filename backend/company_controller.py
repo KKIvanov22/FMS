@@ -132,7 +132,6 @@ def update_company_name_handler():
         return jsonify({"error": "Username and user ID are required"}), 400
 
     try:
-        # Get the company of the user from the cookies
         user_ref = db.reference(f'Accounts/{user_id}')
         user = user_ref.get()
         if not user:
@@ -142,7 +141,6 @@ def update_company_name_handler():
         if not new_company:
             return jsonify({"error": "User's company not found"}), 404
 
-        # Update the specified user's company
         users_ref = db.reference('Accounts')
         users = users_ref.order_by_child('Username').equal_to(username).get()
         if not users:
@@ -155,4 +153,31 @@ def update_company_name_handler():
         return jsonify({"message": "User's company updated successfully"}), 200
     except Exception as e:
         logging.error(f"Error updating user's company: {e}")
+        return jsonify({"error": str(e)}), 500
+    
+
+def get_company_user_count_handler():
+    user_id = request.cookies.get('user_id')
+
+    if not user_id:
+        return jsonify({"error": "User ID not found in cookies"}), 400
+
+    try:
+        ref = db.reference(f'Accounts/{user_id}')
+        user = ref.get()
+
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        company = user.get("Company")
+        if not company:
+            return jsonify({"error": "User does not belong to any company"}), 400
+
+        company_users_ref = db.reference('Accounts')
+        company_users = company_users_ref.order_by_child('Company').equal_to(company).get()
+
+        user_count = len(company_users)
+        return jsonify({"company_user_count": user_count}), 200
+    except Exception as e:
+        logging.error(f"Error fetching company user count: {e}")
         return jsonify({"error": str(e)}), 500

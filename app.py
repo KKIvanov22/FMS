@@ -8,7 +8,7 @@ import firebase_admin
 from datetime import datetime
 
 from backend.auth_controller import register_handler, login_handler, get_user_handler, link_google_handler
-from backend.company_controller import update_company_handler, get_companies_handler, add_company_material_handler, get_company_material_handler, update_company_material_handler, update_company_name_handler
+from backend.company_controller import update_company_handler, get_companies_handler, add_company_material_handler, get_company_material_handler, update_company_material_handler, update_company_name_handler, get_company_user_count_handler
 from backend.team_controller import add_team_handler, get_teams_handler, update_team_handler, add_team_material_handler, get_team_material_handler, update_team_material_handler
 from backend.user_controller import update_user_handler, update_user_role_handler, get_users_handler, get_employee_tasks_handler, get_all_users_handler
 from backend.tasks_controller import add_team_tasks_handler, get_team_tasks_handler
@@ -68,6 +68,9 @@ def update_company_material():
 def update_company_name():
     return update_company_name_handler()
 
+@app.route('/get_company_user_count', methods=['GET'])
+def get_company_user_count():
+    return get_company_user_count_handler()
 # ----------------------------------------------------------------
 # Team routes
 @app.route('/add_team', methods=['POST'])

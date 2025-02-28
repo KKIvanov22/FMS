@@ -1,7 +1,6 @@
-
+declare const google: any;
 
 document.addEventListener('DOMContentLoaded', () => {
-    alert("DOMContentLoaded event fired");
     const editUserInfoForm = document.getElementById('editUserInfoForm') as HTMLFormElement;
     const usernameField = document.getElementById('editUsername') as HTMLInputElement;
     const emailField = document.getElementById('editEmail') as HTMLInputElement;
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(response => response.json())
     .then(data => {
-        alert("User data fetched: " + JSON.stringify(data));
         if (data.error) {
             alert("Error fetching user data: " + data.error);
         } else {
@@ -74,9 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert("Error updating user information: " + data.error);
             } else {
-                alert('User information updated successfully');
                 profilePicture.style.backgroundImage = `url(${profilePictureUrl.value})`;
                 profilePicture.style.backgroundSize = 'cover';
             }
@@ -84,8 +80,51 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => alert('Error updating user information: ' + error));
     });
 
-    //linkToGoogleButton.addEventListener('click', signInWithGoogle);
 });
+
+function signInWithGoogle() {
+    interface GoogleResponse {
+        credential: string;
+    }
+
+    interface UserData {
+        Username: string;
+        Email: string;
+        ProfilePictureUrl?: string;
+        error?: string;
+    }
+
+    interface UpdatedUserInfo {
+        email: string;
+        password: string;
+        profilePictureUrl: string;
+    }
+
+    function signInWithGoogle() {
+        google.accounts.id.initialize({
+            client_id: "977047956351-h0i61rq2bq8lr2teuch9p4gdsbbcgukg.apps.googleusercontent.com", 
+            callback: (response: GoogleResponse) => {
+                fetch('http://localhost:5000/link-google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ idToken: response.credential })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error linking Google: ' + data.error);
+                    } else {
+                        alert('Google linked successfully');
+                    }
+                })
+                .catch(error => alert('Error linking Google: ' + error));
+            }
+        });
+        google.accounts.id.prompt();
+    }
+    google.accounts.id.prompt();
+}
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {

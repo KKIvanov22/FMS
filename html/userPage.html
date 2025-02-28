@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="icon" type="image/png" href="./images/fmsLogo.png">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
 <body id="Link" style="overflow-y: hidden;" class=" bg-gray-900 font-sans leading-normal tracking-normal text-white">
     <div style="display: flex;" class="">
@@ -59,7 +61,7 @@
                     automatically receive information about the Google content you view while
                     your accounts are connected. If you do not want this information shared,
                     please disconnect your accounts.</div>
-                    <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700">Link</button>                
+                    <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700" onclick = "signInWithGoogle()" >Link</button>                
                 </div>
             </div>
 

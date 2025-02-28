@@ -94,8 +94,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
 
-                if ((userData.RoleInCompany === 'admin' || userData.RoleInCompany === 'team_leader') && createTeamButton) {
-                    createTeamButton.style.display = 'block';
+                if ((userData.RoleInCompany === 'admin' || userData.RoleInCompany === 'team_leader') || createTeamButton) {
+                    if (createTeamButton) {
+                        createTeamButton.style.display = 'block';
+                    }
 
                     const teamsResponse = await fetch(`http://localhost:5000/get_teams?company=${userData.Company}`, {
                         credentials: 'include'

@@ -64,6 +64,7 @@ def update_user_role_handler():
     data = request.get_json()
     username = data.get('username')
     new_role = data.get('role')
+    new_level = data.get('level', 1)  # Default level to 1 if not provided
 
     if not username or not new_role:
         return jsonify({"error": "Username and new role are required"}), 400
@@ -77,9 +78,12 @@ def update_user_role_handler():
 
         user_id = list(users.keys())[0]
         user_ref = db.reference(f'Accounts/{user_id}')
-        user_ref.update({"RoleInCompany": new_role})
+        user_ref.update({
+            "RoleInCompany": new_role,
+            "Level": new_level
+        })
 
-        return jsonify({"message": "User role updated successfully"}), 200
+        return jsonify({"message": "User role and level updated successfully"}), 200
     except Exception as e:
         logging.error(f"Error updating user role: {e}")
         return jsonify({"error": str(e)}), 500

@@ -18,11 +18,12 @@ def register_handler():
         user_record = auth.create_user(email=email, password=password, display_name=username)
         ref = db.reference('Accounts')
         ref.child(user_record.uid).set({
-            "Username": username,
-            "Email": email,
-            "Company": company,
-            "Role": role,
-            "RoleInCompany": role_in_company
+        "Username": username,
+        "Email": email,
+        "Company": company,
+        "Role": role,
+        "RoleInCompany": role_in_company,
+        "Level": 1
         })
         response = make_response(jsonify({"message": "registered successful"}), 200)
         response.set_cookie("user_id", user_record.uid, httponly=False, samesite='None', secure=True)

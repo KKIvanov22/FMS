@@ -41,17 +41,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 submitUpdateUserRole.addEventListener('click', async () => {
                     const username = (document.getElementById('updateUserRoleUsername') as HTMLInputElement).value;
                     const role = (document.getElementById('updateUserRole') as HTMLSelectElement).value;
+                    const level = (document.getElementById('updateUserLevel') as HTMLInputElement).value;
 
                     const response = await fetch('http://localhost:5000/update_user_role', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ username, role })
+                        body: JSON.stringify({ username, role, level })
                     });
 
                     if (response.ok) {
-                        alert('User role updated successfully');
+                        alert('User role and level updated successfully');
                         const updateUserRoleModal = document.getElementById('updateUserRoleModal');
                         if (updateUserRoleModal) {
                             updateUserRoleModal.style.display = 'none';

@@ -7,7 +7,7 @@ def create_chat_handler():
     data = request.get_json()
     participants = data.get('participants')
     user_id = request.cookies.get('user_id')
-
+    
     if not user_id:
         return jsonify({"error": "User ID not found in cookies"}), 400
 

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async () => {
     async function fetchDataAndUpdateUI() {
         try {
@@ -27,6 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const taskNameInput = document.getElementById('taskName') as HTMLInputElement;
                 const taskDescriptionInput = document.getElementById('taskDescription') as HTMLTextAreaElement;
                 const taskLevelInput = document.getElementById('taskLevel') as HTMLInputElement;
+                const callGeminiButton = document.getElementById('callGemini');
+                const geminiResponseDiv = document.getElementById('geminiResponse');
                 let currentTeamName = '';
 
                 const usersResponse = await fetch('http://localhost:5000/get_users', {
@@ -322,12 +323,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const company = userData.Company;
                     if (taskName && taskDescription && taskLevel) {
                         try {
+                            const usersResponse = await fetch('http://localhost:5000/get_users', {
+                                credentials: 'include'
+                            });
+                            const users = await usersResponse.json();
+
+                            const userLevels = users.map((user: any) => ({
+                                username: user.Username,
+                                level: user.Level || 1
+                            }));
+
+                            const geminiResponse = await fetch('https://gemini.api/assign_task', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    taskName: taskName,
+                                    users: userLevels,
+                                    message: "Please answer with the username of the user best for the task."
+                                })
+                            });
+
+                            const geminiData = await geminiResponse.json();
+                            const bestUser = geminiData.username;
+
                             const taskResponse = await fetch('http://localhost:5000/add_team_tasks', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({ company: company, teamName: currentTeamName, taskName: taskName, description: taskDescription, level: taskLevel }),
+                                body: JSON.stringify({
+                                    company: company,
+                                    teamName: currentTeamName,
+                                    taskName: taskName,
+                                    description: taskDescription,
+                                    level: taskLevel,
+                                    assignedTo: bestUser
+                                }),
                                 credentials: 'include'
                             });
 
@@ -351,6 +384,43 @@ document.addEventListener('DOMContentLoaded', async () => {
                         alert('Please fill in all fields');
                     }
                 });
+
+                callGeminiButton?.addEventListener('click', async () => {
+                    const taskName = taskNameInput.value;
+                    if (taskName) {
+                        try {
+                            const usersResponse = await fetch('http://localhost:5000/get_users', {
+                                credentials: 'include'
+                            });
+                            const users = await usersResponse.json();
+
+                            const userLevels = users.map((user: any) => ({
+                                username: user.Username,
+                                level: user.Level || 1
+                            }));
+
+                            const geminiResponse = await fetch('http://localhost:5000/call_gemini', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    taskName: taskName,
+                                    users: userLevels
+                                }),
+                                credentials: 'include'
+                            });
+
+                            const geminiData = await geminiResponse.json();
+                            geminiResponseDiv!.textContent = `Best user for the task: ${geminiData.username}`;
+                        } catch (error) {
+                            console.error('Error:', error);
+                            geminiResponseDiv!.textContent = 'Failed to get response from Gemini';
+                        }
+                    } else {
+                        geminiResponseDiv!.textContent = 'Please enter a task name';
+                    }
+                });
             } else {
                 console.error('Failed to fetch user data');
             }
@@ -370,4 +440,3 @@ document.addEventListener("keydown", (event) => {
         require("electron").ipcRenderer.send("reload-window");
     }
 });
-

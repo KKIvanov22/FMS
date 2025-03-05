@@ -1,9 +1,10 @@
 import logging
 import subprocess
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from firebase_admin import credentials, db, auth
 import firebase_admin
+import requests
 
 from datetime import datetime
 
@@ -160,6 +161,43 @@ def get_messages():
     return get_messages_handler()
 
 # ----------------------------------------------------------------
+@app.route('/call_gemini', methods=['POST'])
+def call_gemini():
+    data = request.get_json()
+    task_name = data.get('taskName')
+    users = data.get('users')
+
+    if not task_name or not users:
+        return jsonify({"error": "taskName and users are required"}), 400
+
+    GEMINI_API_KEY = "AIzaSyDg2dgUtVXhJel_yG7iCH2Z_wpQifgC36I" 
+    GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDg2dgUtVXhJel_yG7iCH2Z_wpQifgC36I"  # Replace with the correct API endpoint
+
+    headers = {
+        "Authorization": f"Bearer {GEMINI_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "taskName": task_name,
+        "users": users,
+        "message": "Please answer with the username of the user best for the task."
+    }
+
+    try:
+        gemini_response = requests.post(GEMINI_API_URL, json=payload, headers=headers)
+
+        if gemini_response.status_code == 200:
+            gemini_data = gemini_response.json()
+            print(gemini_data)
+            return jsonify({"username": gemini_data.get('username')}), 200
+        else:
+            return jsonify({"error": "Failed to get response from Gemini"}), 500
+    except Exception as e:
+        logging.error(f"Error calling Gemini: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 def run_electron():
     try:
         subprocess.run(["npm", "start"], check=True)

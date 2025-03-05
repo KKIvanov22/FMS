@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     credentials: 'include'
                 });
                 const users = await usersResponse.json();
+                console.log('Users:', users);
 
                 function populateUserCheckboxes(container: HTMLElement, selectedUsers: string[] = []) {
                     container.innerHTML = '';
@@ -143,31 +144,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 createTeamButton?.addEventListener('click', () => {
+                    console.log('Create Team Button Clicked');
                     populateUserCheckboxes(teamMembersList!);
                     createTeamModal!.style.display = 'block';
-
-                    const fetchMaterialsButton = document.createElement('button');
-                    fetchMaterialsButton.textContent = 'Fetch Materials from Inventory';
-                    fetchMaterialsButton.className = 'bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500';
-
-                    fetchMaterialsButton.addEventListener('click', async () => {
-                        try {
-                            const materialsResponse = await fetch(`http://localhost:5000/get_company_material?company=${userData.Company}`, {
-                                credentials: 'include'
-                            });
-                            if (materialsResponse.ok) {
-                                const materialsData = await materialsResponse.json();
-                                console.log('Materials fetched:', materialsData);
-                                // Display or handle the fetched materials as needed
-                            } else {
-                                console.error('Failed to fetch materials');
-                            }
-                        } catch (error) {
-                            console.error('Error fetching materials:', error);
-                        }
-                    });
-
-                    createTeamModal!.querySelector('.flex')?.insertAdjacentElement('beforebegin', fetchMaterialsButton);
                 });
 
                 closeTeamModalButton?.addEventListener('click', () => {

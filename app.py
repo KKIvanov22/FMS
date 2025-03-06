@@ -174,7 +174,7 @@ def call_gemini():
         return jsonify({"error": "taskName and users are required"}), 400
 
     try:
-        # Convert user objects to a formatted string for Gemini
+        
         user_list = ", ".join([user["username"] for user in users])
 
         GEMINI_API_KEY = "AIzaSyA-HN3RJttsGe62SE0Gx5TetBMSFQVywyc" 

@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const result = await response.json();
         if (response.ok) {
-          alert('Login successful');
           if (result.role === 'admin') {
             window.location.href = './html/adminPage.html';
           } else {

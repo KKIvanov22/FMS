@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const taskLevelInput = document.getElementById('taskLevel') as HTMLInputElement;
                 const callGeminiButton = document.getElementById('callGemini');
                 const geminiResponseDiv = document.getElementById('geminiResponse');
-                let currentTeamName = '';
+                let currentTeamName = userData.Team;
 
                 const usersResponse = await fetch('http://localhost:5000/get_users', {
                     credentials: 'include'
@@ -295,99 +295,52 @@ document.addEventListener('DOMContentLoaded', async () => {
                     assignTaskModal!.style.display = 'none';
                 });
 
-                document.addEventListener("DOMContentLoaded", () => {
-                    const submitTaskButton = document.getElementById("submitTask");
-                    const taskNameInput = document.getElementById("taskName") as HTMLInputElement;
-                    const taskDescriptionInput = document.getElementById("taskDescription") as HTMLTextAreaElement;
-                    const taskLevelInput = document.getElementById("taskLevel") as HTMLInputElement;
-                    const assignTaskModal = document.getElementById("assignTaskModal");
-                    const teamTasksList = document.getElementById("teamTasksList");
-                
-                    if (submitTaskButton) {
-                        submitTaskButton.addEventListener("click", async () => {
-                            console.log("Submitting task..."); // Debugging
-                            
-                            const taskName = taskNameInput.value;
-                            const taskDescription = taskDescriptionInput.value;
-                            const taskLevel = taskLevelInput.value;
-                            const company = userData.Company; // Ensure `userData` is available
-                            const currentTeamName = "YourTeamName"; // Replace with actual logic
-                
-                            if (taskName && taskDescription && taskLevel) {
-                                try {
-                                    const usersResponse = await fetch("http://localhost:5000/get_users", {
-                                        credentials: "include"
-                                    });
-                                    const users = await usersResponse.json();
-                
-                                    const userLevels = users.map((user: any) => ({
-                                        username: user.Username,
-                                        level: user.Level || 1
-                                    }));
-                
-                                    const geminiResponse = await fetch("https://gemini.api/assign_task", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json"
-                                        },
-                                        body: JSON.stringify({
-                                            taskName,
-                                            users: userLevels,
-                                            message: "Please answer with the username of the user best for the task."
-                                        })
-                                    });
-                
-                                    const geminiData = await geminiResponse.json();
-                                    const bestUser = geminiData.username;
-                
-                                    // Send task assignment to backend
-                                    const taskResponse = await fetch("http://localhost:5000/add_team_tasks", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json"
-                                        },
-                                        body: JSON.stringify({
-                                            company,
-                                            teamName: currentTeamName,
-                                            taskName,
-                                            description: taskDescription,
-                                            level: taskLevel,
-                                            assignedTo: bestUser
-                                        }),
-                                        credentials: "include"
-                                    });
-                
-                                    if (taskResponse.ok) {
-                                        alert("Task assigned successfully");
-                                        assignTaskModal!.style.display = "none";
-                
-                                        // Fetch updated task list
-                                        const tasksResponse = await fetch(
-                                            `http://localhost:5000/get_team_tasks?company=${company}&team=${currentTeamName}`,
-                                            { credentials: "include" }
-                                        );
-                                        if (tasksResponse.ok) {
-                                            const tasks = await tasksResponse.json();
-                                            populateTasksList(teamTasksList!, tasks);
-                                        }
-                                    } else {
-                                        alert("Failed to assign task");
-                                    }
-                                } catch (error) {
-                                    console.error("Error:", error);
+                submitTaskButton?.addEventListener("click", async () => {
+                    console.log("Submitting task..."); // Debugging
+                    
+                    const taskName = taskNameInput.value;
+                    const taskDescription = taskDescriptionInput.value;
+                    const taskLevel = taskLevelInput.value;
+                    const company = userData.Company; // Ensure `userData` is available
+        
+                    
+                        try {
+                            const taskResponse = await fetch("http://localhost:5000/add_team_tasks", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    company,
+                                    teamName: currentTeamName,
+                                    taskName,
+                                    description: taskDescription,
+                                    level: taskLevel,
+                                    assignedTo: "bestUser" // Replace with actual logic to determine the best user
+                                }),
+                                credentials: "include"
+                            });
+        
+                            if (taskResponse.ok) {
+                                alert("Task assigned successfully");
+                                assignTaskModal!.style.display = "none";
+        
+                                // Fetch updated task list
+                                const tasksResponse = await fetch(
+                                    `http://localhost:5000/get_team_tasks?company=${company}&team=${currentTeamName}`,
+                                    { credentials: "include" }
+                                );
+                                if (tasksResponse.ok) {
+                                    const tasks = await tasksResponse.json();
+                                    populateTasksList(teamTasksList!, tasks);
                                 }
                             } else {
-                                alert("Please fill in all fields");
+                                alert("Failed to assign task");
                             }
-                        });
-                    } else {
-                        console.error("submitTask button not found.");
-                    }
-                });
-                
-
-                submitTaskButton?.addEventListener('click', () => {
-                    console.log('Another event listener for submitTaskButton');
+                        } catch (error) {
+                            console.error("Error:", error);
+                        }
+                    
                 });
 
                 callGeminiButton?.addEventListener('click', async () => {

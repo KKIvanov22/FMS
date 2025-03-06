@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,32 +17,32 @@
             <div style=" display: flex; justify-content: center; align-items: center;" class="flex flex-col content-center justify-center">
                 <div id="profilePicture" class="bg-gray-700" style="border-radius: 100%; width:20vw; height:20vw; margin-top: -5vh;"></div>
                 <input type="text" id="profilePictureUrl" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white mt-2" 
-                    placeholder="Enter image URL" style="display: none;">
+                    placeholder="Въведете URL на изображението" style="display: none;">
             </div>
             
             <form action="" class="flex flex-col ml-5" id="editUserInfoForm">
                 <div class="mb-4 flex flex-col">
-                    <label for="editUsername" class="block text-gray-300 font-bold mb-2">Username</label>
+                    <label for="editUsername" class="block text-gray-300 font-bold mb-2">Потребителско име</label>
                     <input type="text" id="editUsername" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
-                        placeholder="Username" disabled>
+                        placeholder="Потребителско име" disabled>
                 </div>
                 <div class="mb-4">
-                    <label for="editEmail" class="block text-gray-300 font-bold mb-2">Email:</label>
+                    <label for="editEmail" class="block text-gray-300 font-bold mb-2">Имейл:</label>
                     <input type="email" id="editEmail" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
-                        placeholder="Email" disabled>
+                        placeholder="Имейл" disabled>
                 </div>
                 <div class="mb-4">
-                    <label for="editPassword" class="block text-gray-300 font-bold mb-2">Password:</label>
+                    <label for="editPassword" class="block text-gray-300 font-bold mb-2">Парола:</label>
                     <input type="password" id="editPassword" class="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white" 
-                        placeholder="Password" disabled>
+                        placeholder="Парола" disabled>
                 </div>
                 <div class="flex justify-end">
                     <button id="editButton" type="button" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-500">
-                        Edit Information
+                        Редактиране на информация
                     </button>
                     <button id="saveButton" type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-500 ml-2" 
                         style="display: none;">
-                        Save Changes
+                        Запазване на промените
                     </button>
                 </div>
             </form>
@@ -55,13 +55,12 @@
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw;" class="mt-1"><img src="./images/googleLogo.png" alt=""></div>
                     <div id="LinkGoogle" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
-                    Press "link" to link your active FMS account with Google account.
-                    By connecting your Google account, you acknowledge and agree that your 
-                    Google ID will be publicly visible in the FMS API and that FMS will 
-                    automatically receive information about the Google content you view while
-                    your accounts are connected. If you do not want this information shared,
-                    please disconnect your accounts.</div>
-                    <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700" onclick = "signInWithGoogle()" >Link</button>                
+                    Натиснете "свържи", за да свържете активния си FMS акаунт с Google акаунт.
+                    Със свързването на вашия Google акаунт, вие потвърждавате и се съгласявате, че вашият 
+                    Google ID ще бъде публично видим в FMS API и че FMS автоматично ще получава информация 
+                    за съдържанието на Google, което разглеждате, докато вашите акаунти са свързани. 
+                    Ако не искате тази информация да бъде споделяна, моля, прекъснете връзката между акаунтите си.</div>
+                    <button id="linkToGoogle" class="bg-gray-800 h-7 w-32 rounded-lg ml-20 mt-8 hover:bg-gray-700" onclick = "signInWithGoogle()" >Свържи</button>                
                 </div>
             </div>
 
@@ -69,39 +68,38 @@
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw;"class="mt-1"><img src="./images/microsoftLogo.png" alt=""></div>
                     <div id="LinkMicrosoft" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
-                        Press "link" to link your active FMS account with Microsoft account.
-                        By connecting your Microsoft account, you acknowledge and agree that your 
-                        Microsoft ID will be publicly visible in the FMS API and that FMS will 
-                        automatically receive information about the Microsoft content you view while
-                        your accounts are connected. If you do not want this information shared,</div>
+                        Натиснете "свържи", за да свържете активния си FMS акаунт с Microsoft акаунт.
+                        Със свързването на вашия Microsoft акаунт, вие потвърждавате и се съгласявате, че вашият 
+                        Microsoft ID ще бъде публично видим в FMS API и че FMS автоматично ще получава информация 
+                        за съдържанието на Microsoft, което разглеждате, докато вашите акаунти са свързани. 
+                        Ако не искате тази информация да бъде споделяна, моля, прекъснете връзката между акаунтите си.</div>
                 </div>
-                <button id="linkToMicrosoft" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
+                <button id="linkToMicrosoft" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Свържи</button>
             </div>
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw; " class="mt-1"><img src="./images/githubLogo.png" alt=""></div>
                     <div id="LinkGithub" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
-                        Press "link" to link your active FMS account with Github account.
-                        By connecting your Github account, you acknowledge and agree that your 
-                        Github ID will be publicly visible in the FMS API and that FMS will 
-                        automatically receive information about the Github content you view while
-                        your accounts are connected. If you do not want this information shared,</div>
+                        Натиснете "свържи", за да свържете активния си FMS акаунт с Github акаунт.
+                        Със свързването на вашия Github акаунт, вие потвърждавате и се съгласявате, че вашият 
+                        Github ID ще бъде публично видим в FMS API и че FMS автоматично ще получава информация 
+                        за съдържанието на Github, което разглеждате, докато вашите акаунти са свързани. 
+                        Ако не искате тази информация да бъде споделяна, моля, прекъснете връзката между акаунтите си.</div>
                 </div>
-                <button id="linkToGithub" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
+                <button id="linkToGithub" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Свържи</button>
             </div>
 
             <div class="ml-5" style="display: flex; align-items: center; width: 60vw; margin-top:-3vh;">
                 <div style="display: flex; height:12vh; justify-content: center; text-align:justify; ">
                     <div style="width:5vw; " class="mt-1"><img src="./images/appleLogo.png" alt=""></div>
                     <div id="LinkApple" class="ml-4" style="width: 35vw; overflow-y: scroll; ">
-                    Press "link" to link your active FMS account with Apple account.
-                    By connecting your Apple account, you acknowledge and agree that your 
-                    Apple ID will be publicly visible in the FMS API and that FMS will 
-                    automatically receive information about the Apple content you view while
-                    your accounts are connected. If you do not want this information shared,
-                    please disconnect your accounts.</div>
+                    Натиснете "свържи", за да свържете активния си FMS акаунт с Apple акаунт.
+                    Със свързването на вашия Apple акаунт, вие потвърждавате и се съгласявате, че вашият 
+                    Apple ID ще бъде публично видим в FMS API и че FMS автоматично ще получава информация 
+                    за съдържанието на Apple, което разглеждате, докато вашите акаунти са свързани. 
+                    Ако не искате тази информация да бъде споделяна, моля, прекъснете връзката между акаунтите си.</div>
                 </div>
-                <button id="linkToApple" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Link</button>
+                <button id="linkToApple" style="width: 10vw;" class="ml-20 bg-gray-800 h-7 rounded-lg hover:bg-gray-700">Свържи</button>
             </div>
         </div>
     </div>

@@ -47,7 +47,18 @@ const translations: Translations = {
   "Create Teams": "Създаване на екипи",
   "Update role": "Актуализиране на ролята",
   "Update Companys": "Актуализиране на компании",
-
+  "Update Teams": "Актуализиране на екипи",
+  "Update Materials": "Актуализиране на материали",
+  "Update Tasks": "Актуализиране на задачи",
+  "Update Users": "Актуализиране на потребители",
+  "Updare Role": "Актуализиране на роли",
+  "Participants": "Участници",
+  "Chat Name:": "Име на чата:",
+  "Chat Description:": "Описание на чата:",
+  "Chat Level:": "Ниво на чата:",
+  "Chat Participants:": "Участници в чата:",
+  "Chat Messages:": "Съобщения в чата:",
+  "Chat Name": "Име на чата",
 };
 
 document.addEventListener('DOMContentLoaded', async () => {

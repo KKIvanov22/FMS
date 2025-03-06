@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 function populateUserCheckboxes(container: HTMLElement, selectedUsers: string[] = []) {
                     container.innerHTML = '';
-                    users.filter((user: any) => user.Company === userData.Company).forEach((user: any) => {
+                    users.filter((user: any) => 1===1).forEach((user: any) => {
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
                         checkbox.id = `user-${user.uid}`;

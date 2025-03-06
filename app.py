@@ -25,6 +25,9 @@ app = Flask(__name__)
 CORS(app)
 logging.basicConfig(level=logging.DEBUG)
 
+GEMINI_API_KEY = "AIzaSyA-HN3RJttsGe62SE0Gx5TetBMSFQVywyc" 
+GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+
 # ----------------------------------------------------------------
 # Auth routes
 @app.route('/register', methods=['POST'])
@@ -170,33 +173,34 @@ def call_gemini():
     if not task_name or not users:
         return jsonify({"error": "taskName and users are required"}), 400
 
-    GEMINI_API_KEY = "AIzaSyDg2dgUtVXhJel_yG7iCH2Z_wpQifgC36I" 
-    GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDg2dgUtVXhJel_yG7iCH2Z_wpQifgC36I"  # Replace with the correct API endpoint
-
-    headers = {
-        "Authorization": f"Bearer {GEMINI_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "taskName": task_name,
-        "users": users,
-        "message": "Please answer with the username of the user best for the task."
-    }
-
     try:
+        # Convert user objects to a formatted string for Gemini
+        user_list = ", ".join([user["username"] for user in users])
+
+        GEMINI_API_KEY = "AIzaSyA-HN3RJttsGe62SE0Gx5TetBMSFQVywyc" 
+        GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + GEMINI_API_KEY
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "contents": [
+                {"parts": [{"text": f"Task: {task_name}. Candidates: {user_list}. Who is best suited for this task? ANSWER with just the name "}]}
+            ]
+        }
+
         gemini_response = requests.post(GEMINI_API_URL, json=payload, headers=headers)
 
         if gemini_response.status_code == 200:
             gemini_data = gemini_response.json()
-            print(gemini_data)
-            return jsonify({"username": gemini_data.get('username')}), 200
+            best_user = gemini_data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "No user found")
+            return jsonify({"username": best_user}), 200
         else:
-            return jsonify({"error": "Failed to get response from Gemini"}), 500
+            return jsonify({"error": f"Failed to get response from Gemini: {gemini_response.text}"}), 500
     except Exception as e:
         logging.error(f"Error calling Gemini: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 def run_electron():
     try:

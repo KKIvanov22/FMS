@@ -12,7 +12,7 @@
    ```sh
    npm install -g typescript
    ```
-##Инсталиране на проекта от GitHub ZIP
+## Инсталиране на проекта от GitHub ZIP
 
 1. Отидете в GitHub хранилището на проекта.
 

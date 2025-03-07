@@ -43,7 +43,7 @@ const translations: Translations = {
   "Task Name:": "Име на задачата:",
   "Task Description:": "Описание на задачата:",
   "Level:": "Ниво:",
-  "Call Gemini": "Обадете се на Gemini",
+  "Call AI": "Обадете се на AI",
   "Create Teams": "Създаване на екипи",
   "Update role": "Актуализиране на ролята",
   "Update Companys": "Актуализиране на компании",
